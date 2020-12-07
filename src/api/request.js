@@ -1,0 +1,1 @@
+import { get, post, del, put } from './axios.js'

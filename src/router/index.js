@@ -1,15 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
+/* Layout */
+import Layout from '@/layout'
+
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
+      component: Layout,
+      redirect: '/home',
+      children: [
+        {
+          path: 'home',
+          component: () => import('@/views/home/index'),
+          name: 'Dashboard',
+        }
+      ]
+    },
+    // service
+    
   ]
 })
