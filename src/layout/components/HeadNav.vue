@@ -55,10 +55,10 @@ export default {
     
     .nav-logo-wapper {
       float: left;
+      height: 64px;
       .nav-logo-img {
         height: 44px;
-        position: relative;
-        top: -2px;
+        margin-top: 10px;
       }
     }
       
