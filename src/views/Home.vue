@@ -1,18 +1,13 @@
 <template>
-  <div class="rec_container">
-
-  </div>
+  
 </template>
 
 <script>
 export default {
-
   
 }
 </script>
 
 <style lang="scss" scoped>
-.rec_container {
-  height: 100%;
-}
+
 </style>

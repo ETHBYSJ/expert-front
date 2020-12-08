@@ -2,7 +2,7 @@
   <div class="index">
     <head-nav></head-nav>
     <div class="index-bg-wapper">
-      <img src="../assets/background.png">
+      <img src="@/assets/background.png">
     </div>
 
     <div class="index-content-container">
@@ -31,6 +31,7 @@ export default {
   height: 100vh;
   position: relative;
   overflow: hidden;
+
   .index-bg-wapper {
     position: absolute;
     top: 50%;
@@ -47,6 +48,7 @@ export default {
     width: 100%;
     display: flex;
     flex-flow: column;
+    
     .index-content-wapper {
       flex: 1;
     }

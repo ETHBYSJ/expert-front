@@ -6,9 +6,9 @@
       </div>
       <div class="nav-title">长三角区域教育评价变革协作联盟专家库</div>
       <div class="nav-login-wapper">
-        <div class="nav-login-button" v-if="userState==0">登录</div>
+        <div class="nav-login-button" v-if="true">登录</div>
         <div class="nav-user-wapper" v-else>
-          <img class="nav-user-img" src="/assets/icon-profile.png">{{userInfo.name}}
+          <img class="nav-user-img" src="@/assets/icon-profile.png">{{123}}
         </div>
       </div>
     </div>
@@ -41,12 +41,12 @@ export default {
     position: relative;
     height: 64px;
     @media screen and (min-width:1500px) {
-      width: 1350px;
+      width: 1200px;
       margin: 0 auto;
     }
     @media screen and (min-width:1000px) and (max-width:1499px) {
-      width: 90%;
-      margin: 0 5%;
+      width: 80%;
+      margin: 0 10%;
     }
     @media screen and (max-width:999px) {
       width: 800px;

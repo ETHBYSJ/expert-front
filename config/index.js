@@ -16,8 +16,8 @@ module.exports = {
         changeOrigin: true,
       },
       "/api/v1": {
-        target: 'http://192.168.1.119:8888',
-        // target: '202.120.39.3',
+        //target: 'http://192.168.1.119:8888',
+        target: 'http://202.120.39.3:8888',
         changeOrigin: true
       }
     },

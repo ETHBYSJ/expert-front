@@ -14,9 +14,21 @@ export const constantRoutes = [
     children: [
       {
         path: 'home',
-        component: () => import('@/views/home/index'),
+        component: () => import('@/views/Home'),
         name: 'Home',
         meta: { title: '首页' },
+      },
+      {
+        path: 'not-logged',
+        component: () => import('@/views/NotLogged'),
+        name: 'NotLoggod',
+        meta: { title: '首页-未登录' },
+      },
+      {
+        path: 'bind-mobile',
+        component: () => import('@/views/BindMobile'),
+        name: 'BindMobile',
+        meta: { title: '绑定手机号' },
       }
     ]
   },
