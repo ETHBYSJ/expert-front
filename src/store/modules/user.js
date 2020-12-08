@@ -1,6 +1,6 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-import { reqGetUserInfo } from '@/api/request'
+import { reqGetUserInfo, reql } from '@/api/request'
 
 const LOGGED = 1, NOT_LOGGED = 0
 
@@ -32,8 +32,14 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-
+  login({ commit }) {
+    return new Promise((resolve, reject) => {
+      reqLogin().then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   },
 
   // get user info

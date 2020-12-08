@@ -8,7 +8,7 @@
       <div class="nav-login-wapper">
         <div class="nav-login-button" v-if="true">登录</div>
         <div class="nav-user-wapper" v-else>
-          <img class="nav-user-img" src="@/assets/icon-profile.png">{{123}}
+          <img class="nav-user-img" src="@/assets/icon-profile.png">{{userName}}
         </div>
       </div>
     </div>
@@ -20,9 +20,17 @@ import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState(['userInfo', 'userState']),
+    ...mapState({
+      userId: state => state.user.id,
+      userName: state => state.user.name,
+    }),
   },
   
+  methods: {
+    handleLogin() {
+      this.$store.dispatch('user/login')
+    }
+  }
 }
 </script>
 

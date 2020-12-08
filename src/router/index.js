@@ -22,7 +22,7 @@ export const constantRoutes = [
         path: 'not-logged',
         component: () => import('@/views/NotLogged'),
         name: 'NotLoggod',
-        meta: { title: '首页-未登录' },
+        meta: { title: '未登录' },
       },
       {
         path: 'bind-mobile',

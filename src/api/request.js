@@ -10,7 +10,8 @@ export const reqGetUserInfo = () => get('/iadmin/user/info')
 
 export const reqChangeUserInfo = (data) => post('/iadmin/user/change', data)
 
-export const reqSetCookie = () => get('/api/v1/cookie')
+// 模拟登陆，set-cookie
+export const reqLogin = () => get('/api/v1/cookie')
 
 export const reqDownloadSampleFile = () => {
   get('/api/v1/recommend/download').then(res => {
