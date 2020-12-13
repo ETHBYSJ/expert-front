@@ -16,7 +16,6 @@
 
 <script>
 import { HeadNav, AppMain } from './components'
-
 export default {
 
   components: { 
@@ -46,11 +45,10 @@ export default {
     background: transparent;
     height: 100%;
     width: 100%;
-    display: flex;
     flex-flow: column;
     
     .index-content-wapper {
-      flex: 1;
+      height: calc(100% - 64px);
     }
   }
 }

@@ -14,7 +14,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'home',
-        component: () => import('@/views/Home'),
+        component: () => import('@/views/home'),
         name: 'Home',
         meta: { title: '首页' },
       },
@@ -38,13 +38,21 @@ export const asyncRoutes = [
   {
     path: '/dept',
     component: Layout,
-    redirect: '/dept/recommend',
+    redirect: '/dept/detail',
     children: [
       {
+        path: 'detail',
+        // test jump
+        redirect: '/dept/recommend',
+        component: () => import('@/views/dept/detail'),
+        name: 'DeptDetail',
+        meta: { title: '单位概况', roles: ['manager'] },
+      },
+      {
         path: 'recommend',
-        component: () => import('@/views/dept/recommend.vue'),
-        name: 'Recommend',
-        meta: { title: '专家推荐' },
+        component: () => import('@/views/dept/recommend'),
+        name: 'DeptRecommend',
+        meta: { title: '专家推荐', roles: ['manager'] },
       }
     ]
   }

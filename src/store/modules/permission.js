@@ -23,6 +23,7 @@ export function filterAsyncRoutes(routes, roles) {
 
   routes.forEach(route => {
     const tmp = { ...route }
+    // console.log(tmp)
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, roles)
@@ -49,12 +50,12 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }, roles) {
     return new Promise(resolve => {
-      let accessedRoutes
       // justify c3j
-      if (roles.includes('c3j.expert')) {
+      let accessedRoutes
+      if (roles.includes('c3j.experts')) {
         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
+        commit('SET_ROUTES', accessedRoutes)
+      } 
       resolve(accessedRoutes)
     })
   }

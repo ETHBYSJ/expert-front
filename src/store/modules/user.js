@@ -1,6 +1,6 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-import { reqGetUserInfo, reql } from '@/api/request'
+import { reqGetUserInfo, reqLogin } from '@/api/request'
 
 const LOGGED = 1, NOT_LOGGED = 0
 
@@ -8,7 +8,7 @@ const state = {
   status: NOT_LOGGED,
   id: '',
   name: '',
-  roles: [],
+  role: '',
   mobile: '',
 }
 
@@ -22,8 +22,8 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
+  SET_ROLE: (state, role) => {
+    state.role = role
   },
   SET_MOBILE: (state, mobile) => {
     state.mobile = mobile
@@ -32,7 +32,7 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }) {
+  login() {
     return new Promise((resolve, reject) => {
       reqLogin().then(response => {
         resolve(response)
@@ -43,29 +43,18 @@ const actions = {
   },
 
   // get user info
-  getUserInfo({ commit }) {
+  getInfo({ commit }) {
     return new Promise((resolve, reject) => {
       reqGetUserInfo().then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('验证过期，请重新登录')
-        }
-
+        const { data } = response.data
+        // for test
+        data.role = 'manager/c3j.experts/测评中心'
         const { id, name, role, mobile } = data
-
-        // roles justify
-        if (!role || role.length <= 0) {
-          reject('角色权限信息为空')
-        }
-
-        const roles = role.split('/')
-
         // commit user state
         commit('SET_STATUS', LOGGED)
         commit('SET_ID', id)
         commit('SET_NAME', name)
-        commit('SET_ROLES', roles)
+        commit('SET_ROLE', role)
         commit('SET_MOBILE', mobile)
         resolve(data)
       }).catch(error => {
@@ -87,11 +76,13 @@ const actions = {
       commit('SET_NAME', '')
       commit('SET_ROLE', '')
       commit('SET_MOBILE', '')
+      resolve()
     })
   }
 }
 
 export default {
+  namespaced: true,
   state,
   mutations,
   actions,

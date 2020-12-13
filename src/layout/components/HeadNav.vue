@@ -6,7 +6,7 @@
       </div>
       <div class="nav-title">长三角区域教育评价变革协作联盟专家库</div>
       <div class="nav-login-wapper">
-        <div class="nav-login-button" v-if="true">登录</div>
+        <div class="nav-login-button" v-if="userStatus" @click="handleLogin">登录</div>
         <div class="nav-user-wapper" v-else>
           <img class="nav-user-img" src="@/assets/icon-profile.png">{{userName}}
         </div>
@@ -17,10 +17,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import { getToken } from '@/utils/auth.js'
 
 export default {
   computed: {
     ...mapState({
+      userStatus: state => state.user.statu===0,
       userId: state => state.user.id,
       userName: state => state.user.name,
     }),
@@ -28,7 +30,9 @@ export default {
   
   methods: {
     handleLogin() {
-      this.$store.dispatch('user/login')
+      this.$store.dispatch('user/login').then(response => {
+        console.log(getToken())
+      })
     }
   }
 }
@@ -48,19 +52,9 @@ export default {
   .nav-container {
     position: relative;
     height: 64px;
-    @media screen and (min-width:1500px) {
-      width: 1200px;
-      margin: 0 auto;
-    }
-    @media screen and (min-width:1000px) and (max-width:1499px) {
-      width: 80%;
-      margin: 0 10%;
-    }
-    @media screen and (max-width:999px) {
-      width: 800px;
-      margin: 0 auto;
-    }
-    
+    width: 1400px;
+    margin: 0 auto;
+
     .nav-logo-wapper {
       float: left;
       height: 64px;
@@ -99,9 +93,6 @@ export default {
       }
 
       .nav-user-wapper {
-        position: absolute;
-        right: 14px;
-        top: 0;
         width: 80px;
         font-size: 17px;
         font-weight: bold;
@@ -114,7 +105,7 @@ export default {
           width: 20px;
           margin-right: 4px;
           position: relative;
-          top: -1px;
+          top: 3px;
           &:hover {
             opacity: 0.8;
           }
