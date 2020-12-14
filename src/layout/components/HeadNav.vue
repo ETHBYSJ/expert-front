@@ -1,6 +1,6 @@
 <template>
   <div class="headnav">
-    <div class="nav-container">
+    <div class="nav-container adaptive-width">
       <div class="nav-logo-wapper">
         <img class="nav-logo-img" src="@/assets/csj-logo.png">
       </div>
@@ -22,17 +22,35 @@ import { getToken } from '@/utils/auth.js'
 export default {
   computed: {
     ...mapState({
-      userStatus: state => state.user.statu===0,
+      userStatus: state => state.user.status===0,
       userId: state => state.user.id,
       userName: state => state.user.name,
     }),
   },
-  
+
+  data() {
+    return {
+      redirect: undefined,
+    }
+  },
+
+  watch: {
+    $route: {
+      handler: function(route) {
+        const query = route.query
+        if (query) {
+          this.redirect = query.redirect
+        }
+      },
+      immediate: true
+    }
+  },
+
   methods: {
     handleLogin() {
       this.$store.dispatch('user/login').then(response => {
-        console.log(getToken())
-      })
+        this.$router.push({ path: this.redirect || '/home'})
+      }).catch(err => {})
     }
   }
 }
@@ -44,23 +62,23 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  line-height: 64px;
+  line-height: 72px;
   z-index: 999;
   background-color: #064b80;
   color: white;
 
   .nav-container {
     position: relative;
-    height: 64px;
-    width: 1400px;
+    height: 72px;
     margin: 0 auto;
 
     .nav-logo-wapper {
       float: left;
-      height: 64px;
+      height: 72px;
       .nav-logo-img {
         height: 44px;
-        margin-top: 10px;
+        position: relative;
+        top: -3px;
       }
     }
       
@@ -105,7 +123,7 @@ export default {
           width: 20px;
           margin-right: 4px;
           position: relative;
-          top: 3px;
+          top: -2px;
           &:hover {
             opacity: 0.8;
           }

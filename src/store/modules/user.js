@@ -10,6 +10,7 @@ const state = {
   name: '',
   role: '',
   mobile: '',
+  secretMobile: '未绑定',
 }
 
 const mutations = {
@@ -27,6 +28,11 @@ const mutations = {
   },
   SET_MOBILE: (state, mobile) => {
     state.mobile = mobile
+    if (mobile.length === 11) {
+      state.secretMobile = mobile.slice(0, 6) + 'XXXXX'
+    } else {
+      state.secretMobile = '未绑定'
+    }
   }
 }
 
@@ -76,6 +82,14 @@ const actions = {
       commit('SET_NAME', '')
       commit('SET_ROLE', '')
       commit('SET_MOBILE', '')
+      resolve()
+    })
+  },
+
+  // bind mobile
+  bindMobile({ commit }, mobile) {
+    return new Promise(resolve => {
+      commit('SET_MOBILE', mobile)
       resolve()
     })
   }

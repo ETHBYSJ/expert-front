@@ -66,16 +66,15 @@ router.beforeEach(async(to, from, next) => {
           store.dispatch('permission/generateRoutes', role.split('/')).then(accessRoutes => {
             router.addRoutes(accessRoutes)
             next({ ...to, replace: true })
-          })
+          }).catch(err => {})
         } else {
           // has no roles
           next()
         }
       }).catch(error => {
-        console.log(error)
         store.dispatch('user/resetStatus').then(() => {
           next(`/not-logged?redirect=${to.path}`)
-        })
+        }).catch(err => {})
       })
     }
   }

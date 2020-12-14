@@ -1,6 +1,6 @@
 <template>
   <div class="home_container">
-    <div class="choose_wapper">
+    <div class="choose_wapper adaptive-width">
       <div class="choose_box_wapper">
         <choose-box 
           :img-src="require('@/assets/user.png')"
@@ -60,7 +60,7 @@ export default {
 <style lang="scss" scoped>
 .home_container {
   position: relative;
-  height: 100%;
+  height: calc(100vh - 72px);
 
   .choose_wapper {
     display: flex;
@@ -70,8 +70,6 @@ export default {
     transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    height: 478px;
-    width: 1500px;
     margin: 0 auto;
 
     .choose_box_wapper {

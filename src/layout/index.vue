@@ -6,10 +6,8 @@
     </div>
 
     <div class="index-content-container">
-      <div id="fixed-nav" style="height: 64px"></div>
-      <div class="index-content-wapper">
-        <app-main></app-main>
-      </div>
+      <div id="fixed-nav" style="height: 72px"></div>
+      <app-main></app-main>
     </div>
   </div>
 </template>
@@ -17,7 +15,6 @@
 <script>
 import { HeadNav, AppMain } from './components'
 export default {
-
   components: { 
     HeadNav,
     AppMain,
@@ -29,16 +26,18 @@ export default {
 .index {
   height: 100vh;
   position: relative;
-  overflow: hidden;
 
   .index-bg-wapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    z-index: -1;
+    overflow: hidden;
+    img {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      z-index: -1;
+    }
   }
 
   .index-content-container {
@@ -46,10 +45,6 @@ export default {
     height: 100%;
     width: 100%;
     flex-flow: column;
-    
-    .index-content-wapper {
-      height: calc(100% - 64px);
-    }
   }
 }
 </style>

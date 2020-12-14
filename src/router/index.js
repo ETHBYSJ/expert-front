@@ -38,7 +38,7 @@ export const asyncRoutes = [
   {
     path: '/dept',
     component: Layout,
-    redirect: '/dept/detail',
+    redirect: '/dept/recommend',
     children: [
       {
         path: 'detail',

@@ -11,10 +11,3 @@ export default {
   
 }
 </script>
-
-<style lang="scss" scoped>
-.app-main {
-  height: 100%;
-  width: 100%;
-}
-</style>
