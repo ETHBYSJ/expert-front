@@ -118,35 +118,4 @@ aside {
   }
 }
 
-.adaptive-width {
-  @media screen and (min-width:1500px) {
-    width: 1500px;
-  }
 
-  @media screen and (min-width:1200px) and (max-width:1499px) {
-    width: 1200px;
-  }
-
-  @media screen and (min-width:1000px) and (max-width:1199px) {
-    width: 1000px;
-  }
-
-  @media screen and (max-width:999px) {
-    width: 900px;
-    margin: 0 auto;
-  }
-}
-
-.adaptive-height {
-  @media screen and (min-height: 980px) {
-    height: 800px;
-  }
-
-  @media screen and (min-height: 780px) and (max-height: 979px) {
-    height: 600px;
-  }
-
-  @media screen and (max-height: 779px) {
-    height: 500px;
-  }
-}

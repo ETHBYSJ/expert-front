@@ -104,7 +104,7 @@ export default {
         letter-spacing: 1px;
         font-weight: bold;
         cursor: pointer;
-        margin-top: 14px;
+        margin-top: 18px;
         &:hover {
           opacity: 0.8;
         }

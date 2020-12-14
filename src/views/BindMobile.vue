@@ -3,7 +3,7 @@
     <div class="mobile-wapper adaptive-width">
       <div class="mobile-title">手机验证</div>
       <div class="mobile-number">手机号：{{secretMobile}}</div>
-      <div class="mobile-button" @click="showModal='mobile'">验证</div>
+      <div class="mobile-button hollow-button" @click="showModal='mobile'">验证</div>
     </div>
 
     <modal-phone v-if="showModal==='mobile'"
@@ -72,11 +72,6 @@ export default {
       float: right;
       width: 64px;
       line-height: 30px;
-      color: #5cc0fe;
-      border: 1px solid #5cc0fe;
-      border-radius: 4px;
-      text-align: center;
-      cursor: pointer;
       font-size: 14px;
 
       &:hover {
