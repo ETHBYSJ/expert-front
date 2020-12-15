@@ -98,7 +98,16 @@ export default {
     }
   },
 
+  mounted: {
+
+  },
+
   methods: {
+
+    // 从localStorage中拿数据
+    getDataFromLocal() {
+
+    },
 
     // 上一步
     backStep() {
