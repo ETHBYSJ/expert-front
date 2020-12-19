@@ -2,29 +2,29 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import { reqGetUserInfo, reqLogin } from '@/api/request'
 
-const LOGGED = 1, NOT_LOGGED = 0
-
 const state = {
-  status: NOT_LOGGED,
+  status: 'LOGOUT',
+
   id: '',
-  name: '',
-  role: '',
   mobile: '',
   secretMobile: '未绑定',
+
+  name: '',
+  department: '',
+  position: '',
+  email: '',
+  auth: 0,
+  
+  role: '', 
 }
 
 const mutations = {
   SET_STATUS: (state, status) => {
     state.status = status
   },
+
   SET_ID: (state, id) => {
     state.id = id
-  },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_ROLE: (state, role) => {
-    state.role = role
   },
   SET_MOBILE: (state, mobile) => {
     state.mobile = mobile
@@ -33,14 +33,43 @@ const mutations = {
     } else {
       state.secretMobile = '未绑定'
     }
-  }
+  },
+
+  SET_NAME: (state, name) => {
+    state.name = name
+  },
+  SET_DEPARTMENT: (state, department) => {
+    state.department = department
+  },
+  SET_POSITION: (state, position) => {
+    state.position = position
+  },
+  SET_EMAIL: (state, email) => {
+    state
+  },
+  CHECK_AUTH: (state) => {
+    if (state.name && state.name != '' 
+        && state.department && state.department != '' 
+        && state.position && state.position != '') {
+      state.auth = 1
+    }
+    else {
+      state.auth = 0
+    }
+  },
+  SET_ROLE: (state, role) => {
+    state.role = role
+  },
+  
+
 }
 
 const actions = {
   // user login
-  login() {
+  login({ commit }) {
     return new Promise((resolve, reject) => {
       reqLogin().then(response => {
+        commit('SET_STATUS', 'LOGIN')
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -52,17 +81,17 @@ const actions = {
   getInfo({ commit }) {
     return new Promise((resolve, reject) => {
       reqGetUserInfo().then(response => {
-        const { data } = response.data
-        // for test
-        data.role = 'manager/c3j.experts/测评中心'
-        const { id, name, role, mobile } = data
+        const { id, mobile, name, department, position, email, role } = response.data.data
         // commit user state
-        commit('SET_STATUS', LOGGED)
         commit('SET_ID', id)
-        commit('SET_NAME', name)
-        commit('SET_ROLE', role)
         commit('SET_MOBILE', mobile)
-        resolve(data)
+        commit('SET_NAME', name)
+        commit('SET_DEPARTMENT', department)
+        commit('SET_POSITION', position)
+        commit('SET_EMAIL', email)
+        commit('CHECK_AUTH')
+        commit('SET_ROLE', role)
+        resolve(response.data.data)
       }).catch(error => {
         reject(error)
       })
@@ -77,9 +106,8 @@ const actions = {
   // remove login status
   resetStatus({ commit }) {
     return new Promise(resolve => {
-      commit('SET_STATUS', NOT_LOGGED)
+      commit('SET_STATUS', 'LOGOUT')
       commit('SET_ID', '')
-      commit('SET_NAME', '')
       commit('SET_ROLE', '')
       commit('SET_MOBILE', '')
       resolve()

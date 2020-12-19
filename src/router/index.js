@@ -19,16 +19,10 @@ export const constantRoutes = [
         meta: { title: '首页' },
       },
       {
-        path: 'not-logged',
-        component: () => import('@/views/NotLogged'),
-        name: 'NotLoggod',
-        meta: { title: '未登录' },
-      },
-      {
-        path: 'bind-mobile',
+        path: 'auth',
         component: () => import('@/views/BindMobile'),
         name: 'BindMobile',
-        meta: { title: '绑定手机号' },
+        meta: { title: '验证信息' },
       }
     ]
   },
@@ -38,12 +32,10 @@ export const asyncRoutes = [
   {
     path: '/dept',
     component: Layout,
-    redirect: '/dept/recommend',
+    redirect: '/dept/detail',
     children: [
       {
         path: 'detail',
-        // test jump
-        redirect: '/dept/recommend',
         component: () => import('@/views/dept/detail'),
         name: 'DeptDetail',
         meta: { title: '单位概况', roles: ['manager'] },
@@ -59,7 +51,7 @@ export const asyncRoutes = [
 ]
 
 const router = new Router({
-  mode: 'history',
+  // mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

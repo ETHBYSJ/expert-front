@@ -1,6 +1,6 @@
 const getters = {
   status: state => state.user.status,
-  roles: state => state.user.roles,
-  mobile: state => state.user.mobile,
+  auth: state => state.user.auth,
+  role: state => state.user.role,
 }
 export default getters

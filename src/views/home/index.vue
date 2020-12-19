@@ -1,10 +1,11 @@
 <template>
   <div class="home_container">
-    <div class="choose_wapper adaptive-width">
+    <div class="choose_wapper adaptive-home-width">
       <div class="choose_box_wapper">
         <choose-box 
           :img-src="require('@/assets/user.png')"
           text="我是用户，我要查询专家"
+          @click.native="handleFind"
         >
         </choose-box>
       </div>
@@ -12,6 +13,7 @@
         <choose-box 
           :img-src="require('@/assets/expert.png')"
           text="我是被推荐人，我要成为专家"
+          @click.native="handleApply"
         >
         </choose-box>
       </div>
@@ -33,24 +35,61 @@ import ChooseBox from './components/ChooseBox.vue'
 export default {
   components: { ChooseBox },
 
-  data() {
-    return {
-      modalShow: '',
-    }
-  },
-
   computed: {
     ...mapState({
-      role: state => state.user.role
+      role: state => state.user.role,
     })
   },
 
   methods: {
-    handleDept() {
-      if (!this.role || this.role.length <= 0) {
-        this.modalShow = 'noAuth'
+    handleFind() {
+      if (!this.role || this.role.length == 0) {
+        this.$alert('当前角色无权限访问该功能', '提示', {
+          confirmButtonText: '确定',
+        });
       } else {
-        this.$router.push('/dept')
+        const roles = this.role.split('/')
+        if (roles.includes('c3j.experts')) {
+          this.$router.push('/find')
+        } else {
+          this.$alert('当前角色无权限访问该功能', '提示', {
+            confirmButtonText: '确定',
+          });
+        }
+      }
+    },
+
+    handleApply() {
+      if (!this.role || this.role.length == 0) {
+        this.$alert('当前角色无权限访问该功能', '提示', {
+          confirmButtonText: '确定',
+        });
+      } else {
+        const roles = this.role.split('/')
+        if (roles.includes('professor') && roles.includes('c3j.experts')) {
+          this.$router.push('/prof')
+        } else {
+          this.$alert('当前角色无权限访问该功能', '提示', {
+            confirmButtonText: '确定',
+          });
+        }
+      }
+    },
+
+    handleDept() {
+      if (!this.role || this.role.length == 0) {
+        this.$alert('当前角色无权限访问该功能', '提示', {
+          confirmButtonText: '确定',
+        });
+      } else {
+        const roles = this.role.split('/')
+        if (roles.includes('manager') && roles.includes('c3j.experts')) {
+          this.$router.push('/dept')
+        } else {
+          this.$alert('当前角色无权限访问该功能', '提示', {
+            confirmButtonText: '确定',
+          });
+        }
       }
     }
   }

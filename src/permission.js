@@ -4,78 +4,61 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import getPageTitle from '@/utils/get-page-title'
 
-const whiteList = ['/not-logged'] // no redirect whitelist when not logged
+// no redirect whitelist when no auth
+const whiteList = ['/auth'] 
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
 
-  console.log({
-    from: from.path,
-    to: to.path
-  })
-
+  //console.log({
+  //  from: from.path,
+  //  to: to.path
+  //})
+  // ------------------------入口登录，只做手机检查---------------------------
   // set title
   document.title = getPageTitle(to.meta.title)
 
-  // determine whether the user has logged in
-  const status = store.getters.status
-
-  // has logged in
-  if (status === 1) {
-    console.log('logged')
-    // redirect to home
-    if (to.path === '/not-logged') {
-      next({ path: '/home' })
-    } else {
-      // determine whether the user has bind mobile
-      const mobile = store.getters.mobile
-      // has bind mobile
-      if (mobile && mobile.length === 11) {
-        if (to.path === '/bind-mobile') {
-          // if is logged in, redirect to home
-          next({ path: '/home' })
-        } else {
-          next()
-        }
+  const hasLogged = store.getters.status === 'LOGIN'
+  // not logged in, jump back to entry.
+  if (!hasLogged) {
+    store.dispatch('user/login').then(_ =>{
+      next({ ...to, replace: true })
+    }).catch(_ => {
+      window.location = "https://asc.shusim.com/edu/forum/"
+    })
+  } 
+  
+  // logged in
+  else { 
+    const hasRole = store.getters.role && store.getters.role.length > 0
+    if (hasRole) {
+      const hasAuth = store.getters.auth === 1
+      if (hasAuth) {
+        next()
       } else {
-        // has not bind mobile
-        if (to.path === '/bind-mobile') {
+        if (whiteList.indexOf(to.path) !== -1) {
           next()
         } else {
-          next('/bind-mobile')
+          next('/auth')
         }
-      }
-    }
-
-  } else {
-    // not logged in
-    console.log('not logged')
-    if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
-      next()
+      }  
     } else {
-      // get user info to check session
-      store.dispatch('user/getInfo').then(response => {
-        // check mobile and role
-        const { mobile, role } = response
-        if (!mobile || mobile.length !== 11) {
-          next('/bind-mobile')
-        }
-        if (role && role.length > 0) {
-          store.dispatch('permission/generateRoutes', role.split('/')).then(accessRoutes => {
-            router.addRoutes(accessRoutes)
-            next({ ...to, replace: true })
-          }).catch(err => {})
-        } else {
-          // has no roles
-          next()
-        }
-      }).catch(error => {
-        store.dispatch('user/resetStatus').then(() => {
-          next(`/not-logged?redirect=${to.path}`)
-        }).catch(err => {})
-      })
+      try{
+        const { role } = await store.dispatch('user/getInfo')
+        const roles = role.split('/')
+
+        // generate accessible routes map based on roles
+        const accessRoutes = await store.dispatch('permission/generateRoutes', roles) 
+
+        // dynamically add accessible routes
+        router.addRoutes(accessRoutes)
+
+        next({ ...to, replace: true })  
+      } catch (error) {
+        NProgress.done()
+        window.location = "https://asc.shusim.com/edu/forum/"
+      }
     }
   }
 })

@@ -1,13 +1,13 @@
 <template>
   <div class="headnav">
-    <div class="nav-container adaptive-width">
+    <div class="nav-container adaptive-nav-width">
       <div class="nav-logo-wapper">
         <img class="nav-logo-img" src="@/assets/csj-logo.png">
       </div>
       <div class="nav-title">长三角区域教育评价变革协作联盟专家库</div>
       <div class="nav-login-wapper">
-        <div class="nav-login-button" v-if="userStatus" @click="handleLogin">登录</div>
-        <div class="nav-user-wapper" v-else>
+        <!--div class="nav-login-button" v-if="userStatus" @click="handleLogin">登录</div-->
+        <div class="nav-user-wapper">
           <img class="nav-user-img" src="@/assets/icon-profile.png">{{userName}}
         </div>
       </div>
@@ -22,13 +22,12 @@ import { getToken } from '@/utils/auth.js'
 export default {
   computed: {
     ...mapState({
-      userStatus: state => state.user.status===0,
-      userId: state => state.user.id,
+      //userStatus: state => state.user.status===0,
       userName: state => state.user.name,
     }),
   },
 
-  data() {
+  /*data() {
     return {
       redirect: undefined,
     }
@@ -44,14 +43,14 @@ export default {
       },
       immediate: true
     }
-  },
+  },*/
 
   methods: {
-    handleLogin() {
-      this.$store.dispatch('user/login').then(response => {
-        this.$router.push({ path: this.redirect || '/home'})
-      }).catch(err => {})
-    }
+    //handleLogin() {
+    //  this.$store.dispatch('user/login').then(response => {
+    //    this.$router.push({ path: this.redirect || '/home'})
+    //  }).catch(err => {})
+    //}
   }
 }
 </script>
