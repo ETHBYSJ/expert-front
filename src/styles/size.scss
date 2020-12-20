@@ -42,7 +42,17 @@
   }
 
   @media screen and (max-width:1499px) {
-    width: 1200px;
+    width: 1200px; // min 960px
+  }
+}
+
+.adaptive-apply-width {
+  @media screen and (min-width:1500px) {
+    width: 1500px;
+  }
+
+  @media screen and (max-width:1499px) {
+    width: 1200px; // min 960px
   }
 }
 

@@ -3,11 +3,11 @@
     <div class="detail-wapper adaptive-nav-width">
       <div class="deep-blue-title" style="line-height:80px">
         <span class="detail-index-text" style="cursor:pointer" @click="$router.push('/home')">首页</span>
-        <span> —— 单位主页</span>
+        <span> —— 专家主页</span>
       </div>
       
       <div class="detail-title-wapper clearfix">
-        <div class="detail-title right-content-title">我上报的推荐</div>
+        <div class="detail-title right-content-title">我的申请</div>
       </div>
 
       <div class="detail-content-wapper">
@@ -52,7 +52,7 @@ export default {
 
   methods: {
     editEnroll(row) {
-      
+      this.$router.push('/prof/apply')
     }
   }
 }
@@ -75,7 +75,7 @@ export default {
     }
 
     .detail-content-wapper {
-      height: 700px;
+      height: 400px;
       padding: 0 24px;
       border: 2px solid #5cc0fe;
       background: white;

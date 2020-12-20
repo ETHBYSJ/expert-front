@@ -10,7 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css' // element-ui css
 import '@/styles/index.scss' // global css
 import '@/styles/button.scss'
 import '@/styles/size.scss'
-import '@/styles/font.scss'
+import '@/styles/text.scss'
 
 import App from './App'
 import store from './store'

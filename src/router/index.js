@@ -20,8 +20,8 @@ export const constantRoutes = [
       },
       {
         path: 'auth',
-        component: () => import('@/views/BindMobile'),
-        name: 'BindMobile',
+        component: () => import('@/views/auth'),
+        name: 'Auth',
         meta: { title: '验证信息' },
       }
     ]
@@ -38,13 +38,33 @@ export const asyncRoutes = [
         path: 'detail',
         component: () => import('@/views/dept/detail'),
         name: 'DeptDetail',
-        meta: { title: '单位概况', roles: ['manager'] },
+        meta: { title: '单位推荐概况', roles: ['manager'] },
       },
       {
         path: 'recommend',
         component: () => import('@/views/dept/recommend'),
         name: 'DeptRecommend',
         meta: { title: '专家推荐', roles: ['manager'] },
+      }
+    ]
+  },
+
+  {
+    path: '/prof',
+    component: Layout,
+    redirect: '/prof/detail',
+    children: [
+      {
+        path: 'detail',
+        component: () => import('@/views/prof/detail'),
+        name: 'ProfDetail',
+        meta: { title: '我的申请', roles: ['professor', 'manager']},
+      },
+      {
+        path: 'apply',
+        component: () => import('@/views/prof/apply'),
+        name: 'ProfApply',
+        meta: { title: '专家申请', roles: ['professor', 'manager']},
       }
     ]
   }

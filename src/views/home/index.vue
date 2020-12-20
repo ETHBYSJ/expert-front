@@ -66,7 +66,7 @@ export default {
         });
       } else {
         const roles = this.role.split('/')
-        if (roles.includes('professor') && roles.includes('c3j.experts')) {
+        if ((roles.includes('professor') || roles.includes('manager'))&& roles.includes('c3j.experts')) {
           this.$router.push('/prof')
         } else {
           this.$alert('当前角色无权限访问该功能', '提示', {

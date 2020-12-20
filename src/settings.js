@@ -1,3 +1,3 @@
 module.exports = {
-  title: '专家库系统',
+  title: '专家库',
 }
