@@ -45,7 +45,7 @@ const mutations = {
     state.position = position
   },
   SET_EMAIL: (state, email) => {
-    state
+    state.email = email
   },
   CHECK_AUTH: (state) => {
     if (state.name && state.name != '' 

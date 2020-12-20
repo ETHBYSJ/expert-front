@@ -4,11 +4,50 @@
       <page-title></page-title>
 
       <div class="apply-content-container adaptive-height">
-        <div class="apply-left-wapper">
+        <div class="apply-left-container">
           <prof-nav></prof-nav>
         </div>
 
-        <div class="apply-right-wapper">
+        <div class="apply-right-container">
+          <div class="apply-right-wapper" v-if="leftStatus===1">
+            <div class="right-content-title">基本信息</div>
+            <div class="right-content-wapper">
+              <base-message></base-message>
+            </div>
+            <div class="right-button-box">
+              <div class="next-button" style="margin: 0 auto;" @click="goStep(2)">下一步</div>
+            </div>
+          </div>
+
+          <div class="apply-right-wapper" v-else-if="leftStatus===2">
+            <div class="right-content-title">专业类别</div>
+            <div class="right-content-wapper">
+            </div>
+          </div>
+
+          <div class="apply-right-wapper" v-else-if="leftStatus===3">
+            <div class="right-content-title">专攻领域</div>
+            <div class="right-content-wapper">
+            </div>
+          </div>
+
+          <div class="apply-right-wapper" v-else-if="leftStatus===4">
+            <div class="right-content-title">个人履历</div>
+            <div class="right-content-wapper">
+            </div>
+          </div>
+
+          <div class="apply-right-wapper" v-else-if="leftStatus===5">
+            <div class="right-content-title">意见评价</div>
+            <div class="right-content-wapper">
+            </div>
+          </div>
+
+          <div class="apply-right-wapper" v-else-if="leftStatus===6">
+            <div class="right-content-title">申报完成</div>
+            <div class="right-content-wapper">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -17,18 +56,28 @@
 
 <script>
 import PageTitle from '@/components/PageTitle.vue'
-import ProfNav from './components/ProfNav.vue'
+import { ProfNav } from './components'
+import { BaseMessage } from './pages'
 
 export default {
   components: { 
     ProfNav,
     PageTitle,
+    // pages
+    BaseMessage,
   },
 
   data() {
     return {
       leftStatus: 1,
     }
+  },
+
+  methods: {
+    
+    step1to2() {
+
+    },
   }
   
 }
@@ -45,18 +94,34 @@ export default {
     .apply-content-container {
       position: relative;
 
-      .apply-left-wapper {
+      .apply-left-container {
         height: 100%;
         position: absolute;
         top: 0;
         left: 0;
       }
     
-      .apply-right-wapper {
+      .apply-right-container {
         height: 100%;
         margin-left: 240px;
         border: 2px solid #5CC0FE;
         background: #ffffff;
+
+        .apply-right-wapper {
+          display: flex;
+          flex-flow: column;
+          width: 860px;
+          margin: 0 auto;
+          height: 100%;
+
+          .right-content-wapper {
+            flex: 1;
+          }
+
+          .right-button-box {
+            height: 95px;
+          }
+        }
       }
     }
   }

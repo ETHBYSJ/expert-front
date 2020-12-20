@@ -11,11 +11,11 @@ router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
 
-  //console.log({
-  //  from: from.path,
-  //  to: to.path
-  //})
-  // ------------------------入口登录，只做手机检查---------------------------
+  console.log({
+    from: from.path,
+    to: to.path
+  })
+  // --------------------------入口登录-----------------------------
   // set title
   document.title = getPageTitle(to.meta.title)
 
@@ -24,7 +24,8 @@ router.beforeEach(async(to, from, next) => {
   if (!hasLogged) {
     store.dispatch('user/login').then(_ =>{
       next({ ...to, replace: true })
-    }).catch(_ => {
+    }).catch(err => {
+      console.log(err)
       window.location = "https://asc.shusim.com/edu/forum/"
     })
   } 
@@ -47,7 +48,6 @@ router.beforeEach(async(to, from, next) => {
       try{
         const { role } = await store.dispatch('user/getInfo')
         const roles = role.split('/')
-
         // generate accessible routes map based on roles
         const accessRoutes = await store.dispatch('permission/generateRoutes', roles) 
 

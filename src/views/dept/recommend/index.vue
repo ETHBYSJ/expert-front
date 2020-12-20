@@ -8,24 +8,14 @@
         <div class="rec-left-wapper">
           <dept-nav></dept-nav>
         </div>
+        
         <div class="rec-right-wapper">
           <div class="rec-msg-container" v-if="leftStatus===1">
             
-            <div class="rec-right-title right-content-title">单位信息</div>
+            <div class="rec-right-title">单位信息</div>
 
-            <div class="rec-msg-upload adaptive-upload-width">
-              <div class="rec-msg-intro">表格上传</div>
-              <div class="rec-msg-content" style="font-size: 15px;">
-                <span style="color:#bbbbbb">请先下载</span>
-                <el-tooltip class="item" effect="dark" content="点击下载文件" placement="right">
-                  <span style="color:#0639e1; cursor:pointer;">《长三角区域教育评价变革协作联盟专家库成员推荐汇总表》</span>
-                </el-tooltip>
-                <span style="color:#bbbbbb">后填写并上传文件。</span>
-
-                <div class="upload-button hollow-button" @click="choiceFile">{{uploadStatus}}</div>
-                <span class="upload-file-name">{{uploadName}}</span>
-                <input ref="filElem" type="file" style="display:none" @change="getFile($event)">
-              </div>
+            <div class="adaptive-upload-height">
+              <dept-upload :uploadObj="uploadObj"></dept-upload>
             </div>
 
             <div class="rec-msg-unit" v-for="(value, key) in deptMsg" :key="key">
@@ -36,9 +26,11 @@
           </div>
 
           <div class="rec-expert-container" v-else-if="leftStatus===2">
-            <div class="rec-right-title right-content-title">专家推荐</div>
+            <div class="rec-right-title">专家推荐</div>
 
-            <expert-page :expertList="expertList"></expert-page>
+            <div class="rec-expert-content-wapper">
+              <expert-page refs="expert-page" :expertList="expertList"></expert-page>
+            </div>
 
             <div class="rec-expert-button-box">
               <div class="next-button" style="float:left" @click="backStep">上一步</div>
@@ -47,7 +39,7 @@
           </div>
 
           <div class="rec-result-container" v-else-if="leftStatus===3">
-            <div class="rec-right-title right-content-title">上报成功</div>
+            <div class="rec-right-title">上报成功</div>
 
             <div class="rec-result-img-wapper">
               <img src="@/assets/commit-succ.png">
@@ -65,30 +57,29 @@
 
 <script>
 import PageTitle from '@/components/PageTitle.vue'
-import ExpertPage from './components/ExpertPage.vue'
-import DeptNav from './components/DeptNav.vue'
-import Expert from './expert.js'
+import { DeptNav, DeptInput, DeptUpload, ExpertPage} from './components'
+import { Department, Expert } from './model.js'
+import { reqGetRecMsg, reqCommitRecMsg } from '@/api/request.js'
 
 export default {
   components: {
     ExpertPage,
     DeptNav,
+    DeptInput,
     PageTitle,
+    DeptUpload,
   },
 
   data() {
     return {
-      leftStatus: 2,
-      recId: '',
+      leftStatus: 1,
+      submitId: '',
       // page 1
-      deptMsg: {
-        name: {name: '填报单位', content: ''},
-        director: {name: '单位负责人', content: ''},
-        agent: {name: '经办人', content: ''},
-        phone: {name: '联系电话', content: ''},
+      deptMsg: new Department(),
+      uploadObj: {
+        uploadStatus: '选择文件',
+        uploadName: '',
       },
-      uploadStatus: '选择文件',
-      uploadName: '',
       // page2
       expertList: [new Expert()]   
     }
@@ -96,17 +87,51 @@ export default {
 
   mounted() {
     if (this.$route.query.id) {
-      this.recId = this.$route.query.id
+      this.submitId = this.$route.query.id
+      // 查询该id是否有记录
+      reqGetRecMsg(this.submitId).then(res => {
+        // 编辑
+        if (res.data.code === 10000) {
+          this.loadRecMsg(res.data.data)
+        } else {
+          // 没有记录，新建
+          console.log('create new recommend')
+        }
+      }).catch(err => {
+        //console.log(err)
+        window.location = "https://asc.shusim.com/edu/forum/"
+      })
     } else {
       this.$router.push('/dept/detail')
     }  
   },
 
   methods: {
+    // 加载已推荐数据
+    loadRecMsg(data) {
+      const { file, department, list } = data
+      // 加载上传文件信息
+      this.uploadObj.uploadName = file
+      this.uploadObj.uploadStatus = (file && file.length>0) ? '重新上传' : '选择文件'
+      // 加载部门信息
+      for (let key in department) {
+        this.deptMsg[key].content = department[key]
+      }
+      // 加载专家信息
+      for (let expert in list) {
+        this.expertList = []
+        let tmpExpert = new Expert()
+        for (let key in expert) {
+          tmpExpert[key].content = expert[key]
+        }
+        this.expertList.push(tmpExpert)
+      }
+    },
+
     // 上一步
     backStep() {
-      if (this.leftStatus > 1) {
-        this.leftStatus -= 1
+      if (this.leftStatus === 2) {
+        this.leftStatus = 1
       }
     },
 
@@ -114,47 +139,42 @@ export default {
     nextStep() {
       // 1 -> 2
       if (this.leftStatus === 1) {
-        this.leftStatus = 2
+        if (this.checkDeptMsg()) {
+          this.leftStatus = 2
+        }
       }
       // 2 -> 3
       else if (this.leftStatus === 2) {
-        this.leftStatus = 3
+        
+        reqCommitRecMsg().then(res => {
+          // 提交成功
+          if (res.data.code === 10000) {
+            this.leftStatus = 3
+          } else {
+            // 提交失败操作
+            this.$alert('提交失败', '提示', {
+              confirmButtonText: '确定',
+            });
+          }
+        }).catch(_ => {
+          this.$alert('提交失败', '提示', {
+            confirmButtonText: '确定',
+          });
+        }) 
       }
     },
 
-    // 检查空白信息
-    checkBlankMsg(msg) {
+    // 检查单位空白信息
+    checkDeptMsg() {
       let flag = true
-      for (let key in msg) {
-        if (!msg[key] && msg[key].length <= 0) {
-          msg[key]
+      for (let key in this.deptMsg) {
+        if (!this.deptMsg[key].content || this.deptMsg[key].content.length <= 0) {
+          flag = false
+          this.deptMsg[key].alert = true
         }
       }
       return flag
     },
-
-    // 提交信息 
-    commitRecMsg() {
-
-
-    },
-    
-    // 选择文件
-    choiceFile() {
-      this.$refs.filElem.dispatchEvent(new MouseEvent('click'))
-    },
-
-    // 获得文件
-    getFile(event) {
-      // load文件名
-      if (event.target.files.length == 0) {
-        this.uploadName = ''
-        return
-      }
-      else {
-        this.uploadName = event.target.files[0].name
-      }
-     },
 
   }
   
@@ -196,21 +216,6 @@ export default {
             margin: 24px auto;
           }
 
-          .rec-msg-upload {
-            
-            .upload-button {
-              margin: 12px 0 4px;
-              height: 36px;
-              width: 90px;
-              line-height: 34px;
-            }
-
-            .upload-file-name {
-              line-height: 20px;
-              font-size: 14px;
-            }
-          }
-
           .rec-msg-unit {
             flex: 1;
           }
@@ -222,6 +227,10 @@ export default {
           margin: 0 auto;
           display: flex;
           flex-flow: column;
+
+          .rec-expert-content-wapper {
+            flex: 1;
+          }
           
           .rec-expert-button-box {
             height: 100px;

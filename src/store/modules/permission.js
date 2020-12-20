@@ -49,14 +49,15 @@ const mutations = {
 
 const actions = {
   generateRoutes({ commit }, roles) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       // justify c3j
-      let accessedRoutes
       if (roles.includes('c3j.experts')) {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+        let accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
         commit('SET_ROUTES', accessedRoutes)
-      } 
-      resolve(accessedRoutes)
+        resolve(accessedRoutes)
+      } else {
+        reject('no auth')
+      }
     })
   }
 }

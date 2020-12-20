@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-class Expert {
+export class Expert {
   constructor() {
     this.id = uuidv4()
     this.name = {name: '姓名', content: '', alert: false}
@@ -17,4 +17,11 @@ class Expert {
   }
 }
 
-export default Expert
+export class Department {
+  constructor() {
+    this.name = {name: '填报单位', content: '', alert: false}
+    this.director = {name: '单位负责人', content: '', alert: false}
+    this.agent = {name: '经办人', content: '', alert: false}
+    this.phone = {name: '联系电话', content: '', alert: false}
+  }
+}

@@ -1,16 +1,16 @@
 <template>
-  <div class="dept-upload-container">
-    <div class="dept-upload-wapper">
-      <div class="dept-upload-intro">表格上传</div>
-      <div class="dept-upload-content">
+  <div class="prof-upload-container">
+    <div class="prof-upload-wapper">
+      <div class="prof-upload-intro">表格上传</div>
+      <div class="prof-upload-content">
         <span style="color:#bbbbbb">请先下载</span>
         <el-tooltip class="item" effect="dark" content="点击下载文件" placement="right">
-          <span style="color:#0639e1; cursor:pointer;">《长三角区域教育评价变革协作联盟专家库成员推荐汇总表》</span>
+          <span style="color:#0639e1; cursor:pointer;">《长三角区域教育评价变革协作联盟专家库成员申请表》</span>
         </el-tooltip>
         <span style="color:#bbbbbb">后填写并上传文件。</span>
 
-        <div class="dept-upload-button hollow-button" @click="choiceFile">{{uploadObj.uploadStatus}}</div>
-        <span class="dept-upload-file-name">{{uploadObj.uploadName}}</span>
+        <div class="prof-upload-button hollow-button" @click="choiceFile">{{uploadObj.uploadStatus}}</div>
+        <span class="prof-upload-file-name">{{uploadObj.uploadName}}</span>
         <input ref="filElem" type="file" style="display:none" @change="getFile($event)">
       </div>
     </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { reqUploadRecFile } from '@/api/request.js'
+import { reqUploadExpertFile } from '@/api/request.js'
 
 export default {
   props: {
@@ -55,7 +55,7 @@ export default {
       if (this.uploadFileObj != {}) {
         let formData = new FormData()
         formData.append('file', this.uploadFileObj)
-        reqUploadRecFile(this.$route.query.id, formData).then(res => {
+        reqUploadExpertFile(this.$route.query.id, formData).then(res => {
           if (res.data.code === 10000) {
             this.$alert('文件上传成功！', '提示', {confirmButtonText: '确定'})
           } else {
@@ -71,31 +71,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dept-upload-container {
+.prof-upload-container {
   position: relative;
 
-  .dept-upload-wapper {
+  .prof-upload-wapper {
     display: flex;
     
-    .dept-upload-intro {
+    .prof-upload-intro {
       line-height: 40px;
-      width: 200px;
+      flex: 0 0 250px;
       font-size: 26px;
       font-weight: bold;
+      padding-left: 50px;
     }
 
-    .dept-upload-content {
+    .prof-upload-content {
       font-size: 15px;
       flex: 1;
 
-      .dept-upload-button {
+      .prof-upload-button {
         margin: 12px 0 4px;
         height: 36px;
         width: 90px;
         line-height: 34px;
       }
 
-      .dept-upload-file-name {
+      .prof-upload-file-name {
+        display: inline-block;
+        height: 20px;
         line-height: 20px;
         font-size: 14px;
       }

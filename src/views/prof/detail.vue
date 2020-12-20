@@ -16,18 +16,9 @@
           header-row-class-name="table-row"
           row-class-name="table-row"
           @row-click="editEnroll">
-          <el-table-column
-            prop="title"
-            label="标题">
-          </el-table-column>
-          <el-table-column
-            prop="status"
-            label="状态">
-          </el-table-column>
-          <el-table-column
-            prop="time"
-            label="提交时间">
-          </el-table-column>
+          <el-table-column prop="title" label="标题"></el-table-column>
+          <el-table-column prop="status" label="状态"></el-table-column>
+          <el-table-column prop="time" label="提交时间"></el-table-column>
         </el-table>
       </div>
     </div>
@@ -40,13 +31,11 @@ import { formatDate } from '@/utils/util.js'
 export default {
   data() {
     return {
-      recordList: [
-        {
-          title: '测试',
-          status: '审核中',
-          time: '12月20日 13:14',
-        }
-      ],
+      recordList: [{
+        title: '测试',
+        status: '审核中',
+        time: '12月20日 13:14',
+      }],
     }
   },
 
@@ -68,14 +57,14 @@ export default {
     .detail-title-wapper {
 
       .detail-title {
-        line-height:50px; 
-        margin-bottom: 20px;
+        line-height: 50px; 
+        margin-bottom: 10px;
         float: left;
       }
     }
 
     .detail-content-wapper {
-      height: 400px;
+      height: 600px;
       padding: 0 24px;
       border: 2px solid #5cc0fe;
       background: white;

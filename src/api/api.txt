@@ -2,11 +2,13 @@
 
 上传推荐表
 url：/api/v1/recommend/upload
-参数：formdata key: "file"
+POST
+请求体：formdata key: "file"
 
 提交推荐信息
 url：/api/v1/recommend/commit
-参数：
+POST
+请求体：
 {
     "company": {
         "name": // 填报单位
@@ -29,31 +31,32 @@ url：/api/v1/recommend/commit
             "email":  // 电子邮箱
         ]
     }
+    "submitID": 
 }
 
 下载推荐表
 url：/api/v1/recommend/download
+GET
 参数：无
 
-获取该用户推荐专家信息
-url：/api/v1/recommend/experts
+根据id获得提交推荐信息
+url：/api/v1/recommend/getSubmit?submitID=
+GET
+参数：见url
+返回：与/api/v1/recommend/commit的请求体格式相同
+
+获取推荐记录
+url: /api/v1/recommend/records
+GET
 参数：无
 返回：
-"list": {
-    [
-        "name":  // 姓名
-        "sex":  // 性别
-        "age": int // 年龄
-        "qualification":  // 学历
-        "title":  // 职称
-        "major":  // 专业或学科
-        "company":  // 工作单位
-        "duty":  // 行政职务
-        "phone":  // 办公电话
-        "mobile":  // 手机
-        "email":  // 电子邮箱
-    ]
-}
+[
+    {
+     "title": 
+     "status":
+     "timestamp":
+    },...
+]
 
 专家申请
 
