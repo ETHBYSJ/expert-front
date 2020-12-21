@@ -38,7 +38,7 @@ export default {
     }
   },
 
-  mounted() {
+  activated() {
     reqGetRecList().then(response => {
       if (response.data.code === 10000) {
         // 有记录
@@ -61,10 +61,7 @@ export default {
             data.time = formatDate(item.timestamp)
             this.recordList.push(data)
           }
-        } /*else {
-          // 没有记录，跳转到申报页面
-          this.$router.push('/dept/recommend')
-        }*/
+        } 
       } else {
         // 错误状态码
         window.location = "https://asc.shusim.com/edu/forum/"
@@ -76,7 +73,10 @@ export default {
 
   methods: {
     editEnroll(row) {
-      
+      this.$router.push({
+        path: '/dept/recommend',
+        query: {'id': row.id}
+      })
     },
 
     // 添加新推荐

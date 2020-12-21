@@ -82,7 +82,6 @@ export default {
     // 检查该页信息是否全
     checkCurrPage() {
       let flag = true
-
       // 当前页循环检查每一项
       const currExpert = this.expertList[this.currPage]
       for(let key in currExpert) {
@@ -93,7 +92,6 @@ export default {
           }
         }
       }
-
       return flag
     },
 
@@ -128,11 +126,13 @@ export default {
 <style lang="scss" scoped>
 .expert-page-container {
   position: relative;
+  height: 100%;
 
   .expert-page-wapper {
     display: flex;
     align-items: center;   // 垂直居中，针对的是mycontainer类下面的子元素，不包含“孙子”元素
     justify-content: center; // 水平居中，针对的是mycontainer类下面的子元素，不包含“孙子”元素
+    height: 100%;
 
     .expert-page-lr {
       width: 40px;
@@ -154,11 +154,7 @@ export default {
         height: 100%;
         display: flex;
         flex-flow: column;
-        
-        .expert-page-unit {
-          flex: 1;
-          display: flex;
-        }
+      
       }
       
       .expert-page-mid-bot {
@@ -189,5 +185,10 @@ export default {
       }
     }
   }
+}
+
+.expert-page-unit {
+  flex: 1;
+  display: flex;
 }
 </style>

@@ -12,7 +12,7 @@
         <div class="rec-right-wapper">
           <div class="rec-msg-container" v-if="leftStatus===1">
             
-            <div class="rec-right-title">单位信息</div>
+            <div class="right-content-title">单位信息</div>
 
             <div class="adaptive-upload-height">
               <dept-upload :uploadObj="uploadObj"></dept-upload>
@@ -26,7 +26,7 @@
           </div>
 
           <div class="rec-expert-container" v-else-if="leftStatus===2">
-            <div class="rec-right-title">专家推荐</div>
+            <div class="right-content-title">专家推荐</div>
 
             <div class="rec-expert-content-wapper">
               <expert-page refs="expert-page" :expertList="expertList"></expert-page>
@@ -39,7 +39,7 @@
           </div>
 
           <div class="rec-result-container" v-else-if="leftStatus===3">
-            <div class="rec-right-title">上报成功</div>
+            <div class="right-content-title">上报成功</div>
 
             <div class="rec-result-img-wapper">
               <img src="@/assets/commit-succ.png">
@@ -74,18 +74,18 @@ export default {
     return {
       leftStatus: 1,
       submitId: '',
-      // page 1
-      deptMsg: new Department(),
       uploadObj: {
         uploadStatus: '选择文件',
         uploadName: '',
       },
+      // page1
+      deptMsg: new Department(),
       // page2
       expertList: [new Expert()]   
     }
   },
 
-  mounted() {
+  activated() {
     if (this.$route.query.id) {
       this.submitId = this.$route.query.id
       // 查询该id是否有记录
@@ -95,8 +95,15 @@ export default {
           this.loadRecMsg(res.data.data)
         } else {
           // 没有记录，新建
-          console.log('create new recommend')
+          // 清空旧的缓存数据
+          this.uploadObj = {
+            uploadStatus: '选择文件',
+            uploadName: '',
+          },
+          this.deptMsg = new Department(),
+          this.expertList = [new Expert()]  
         }
+        this.leftStatus = 1
       }).catch(err => {
         //console.log(err)
         window.location = "https://asc.shusim.com/edu/forum/"
@@ -118,11 +125,11 @@ export default {
         this.deptMsg[key].content = department[key]
       }
       // 加载专家信息
-      for (let expert in list) {
+      for (let expertKey in list) {
         this.expertList = []
         let tmpExpert = new Expert()
-        for (let key in expert) {
-          tmpExpert[key].content = expert[key]
+        for (let key in list[expertKey]) {
+          tmpExpert[key].content = list[expertKey][key]
         }
         this.expertList.push(tmpExpert)
       }
@@ -145,8 +152,9 @@ export default {
       }
       // 2 -> 3
       else if (this.leftStatus === 2) {
-        
-        reqCommitRecMsg().then(res => {
+        const data = this.packRecMsg()
+        //console.log(data)
+        reqCommitRecMsg(data).then(res => {
           // 提交成功
           if (res.data.code === 10000) {
             this.leftStatus = 3
@@ -162,6 +170,26 @@ export default {
           });
         }) 
       }
+    },
+
+    // 打包commit数据
+    packRecMsg() {
+      let msg = {'submitID': this.submitId, department: {}, list: []}
+      // 单位信息
+      for (let key in this.deptMsg) {
+        msg.department[key] = this.deptMsg[key].content
+      }
+      // 专家信息
+      for (let expertKey in this.expertList) {
+        const expert = this.expertList[expertKey]
+        let tmpExpert = {}
+        for (let key in expert) {
+          tmpExpert[key] = expert[key].content
+        }
+        delete tmpExpert.id
+        msg.list.push(tmpExpert)
+      }
+      return msg
     },
 
     // 检查单位空白信息
@@ -272,7 +300,7 @@ export default {
   }
 }
 
-.rec-right-title {
+.right-content-title {
   margin-bottom: 10px;
   line-height: 90px;
   text-align: center;

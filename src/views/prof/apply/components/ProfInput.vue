@@ -1,7 +1,7 @@
 <template>
   <div class="prof-input-container">
     <div class="prof-input-content-wapper">
-      <div class="prof-input-intro" :class="size">{{inputObj.name}}</div>
+      <div class="prof-input-intro" :style="introStyle">{{inputObj.name}}</div>
       <el-input :placeholder="getTip(inputObj.name)" v-model="inputObj.content"></el-input>
     </div>
 
@@ -16,8 +16,9 @@ export default {
   props: {
     size: {
       type: String,
-      default: 'big',
+      default: '150px',
     },
+
     inputObj: {
       type: Object,
       default: {
@@ -28,9 +29,11 @@ export default {
     }
   },
 
-  data() {
-    return {
-      //sizeClass: ['big', 'medium', 'small'],
+  computed: {
+    introStyle() {
+      return {
+        flex: '0 0 ' + this.size
+      }
     }
   },
 
@@ -56,8 +59,9 @@ export default {
 
 <style lang="scss" scoped>
 .prof-input-container {
-  position: relative;
-
+  position: relative; 
+  width: 100%;
+  
   .prof-input-content-wapper {
     display: flex;
     line-height: 40px;
@@ -65,16 +69,6 @@ export default {
     .prof-input-intro {
       font-size: 26px;
       font-weight: bold;
-
-      &.big {
-        flex: 0 0 150px;
-      }
-      &.medium {
-        flex: 0 0 130px;
-      }
-      &.small {
-        flex: 0 0 100px;
-      }
     }
   }
 

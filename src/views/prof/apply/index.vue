@@ -12,10 +12,7 @@
           <div class="apply-right-wapper" v-if="leftStatus===1">
             <div class="right-content-title">基本信息</div>
             <div class="right-content-wapper">
-              <base-message></base-message>
-            </div>
-            <div class="right-button-box">
-              <div class="next-button" style="margin: 0 auto;" @click="goStep(2)">下一步</div>
+              <base-message @nextStep="nextStep"></base-message>
             </div>
           </div>
 
@@ -75,9 +72,14 @@ export default {
 
   methods: {
     
-    step1to2() {
-
+    backStep() {
+      this.leftStatus -= 1
     },
+
+    nextStep() {
+      this.leftStatus += 1
+    },
+
   }
   
 }
@@ -116,10 +118,6 @@ export default {
 
           .right-content-wapper {
             flex: 1;
-          }
-
-          .right-button-box {
-            height: 95px;
           }
         }
       }
