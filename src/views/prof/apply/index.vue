@@ -12,19 +12,21 @@
           <div class="apply-right-wapper" v-if="leftStatus===1">
             <div class="right-content-title">基本信息</div>
             <div class="right-content-wapper">
-              <base-message @nextStep="nextStep"></base-message>
+              <base-message @jump="jump"></base-message>
             </div>
           </div>
 
           <div class="apply-right-wapper" v-else-if="leftStatus===2">
             <div class="right-content-title">专业类别</div>
             <div class="right-content-wapper">
+              <major-category @jump="jump"></major-category>
             </div>
           </div>
 
           <div class="apply-right-wapper" v-else-if="leftStatus===3">
             <div class="right-content-title">专攻领域</div>
             <div class="right-content-wapper">
+              <major-field @jump="jump"></major-field>
             </div>
           </div>
 
@@ -54,7 +56,7 @@
 <script>
 import PageTitle from '@/components/PageTitle.vue'
 import { ProfNav } from './components'
-import { BaseMessage } from './pages'
+import { BaseMessage, MajorCategory, MajorField } from './pages'
 
 export default {
   components: { 
@@ -62,24 +64,20 @@ export default {
     PageTitle,
     // pages
     BaseMessage,
+    MajorCategory,
+    MajorField,
   },
 
   data() {
     return {
-      leftStatus: 1,
+      leftStatus: 4,
     }
   },
 
   methods: {
-    
-    backStep() {
-      this.leftStatus -= 1
+    jump(step) {
+      this.leftStatus += step
     },
-
-    nextStep() {
-      this.leftStatus += 1
-    },
-
   }
   
 }

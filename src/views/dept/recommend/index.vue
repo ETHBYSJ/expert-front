@@ -125,8 +125,8 @@ export default {
         this.deptMsg[key].content = department[key]
       }
       // 加载专家信息
+      this.expertList = []
       for (let expertKey in list) {
-        this.expertList = []
         let tmpExpert = new Expert()
         for (let key in list[expertKey]) {
           tmpExpert[key].content = list[expertKey][key]
@@ -164,7 +164,7 @@ export default {
               confirmButtonText: '确定',
             });
           }
-        }).catch(_ => {
+        }).catch(err => {
           this.$alert('提交失败', '提示', {
             confirmButtonText: '确定',
           });

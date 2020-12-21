@@ -1,4 +1,4 @@
-package vo
+package main
 
 type ApplyBaseVO struct {
 	Name            string `json:"name" bson:"name"`                       	// 姓名

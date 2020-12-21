@@ -1,5 +1,6 @@
 export { default as ProfInput } from './ProfInput.vue'
 export { default as ProfInput2 } from './ProfInput2.vue'
+export { default as ProfLabels } from './ProfLabels.vue'
 export { default as ProfNav } from './ProfNav.vue'
 export { default as ProfUploadFile } from './ProfUploadFile.vue'
 export { default as ProfUploadImg } from './ProfUploadImg.vue'

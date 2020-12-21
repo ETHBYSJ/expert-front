@@ -118,4 +118,13 @@ aside {
   }
 }
 
+.row-flex-unit {
+  flex: 1;
+  display: flex;
+}
 
+.col-flex-unit {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+}

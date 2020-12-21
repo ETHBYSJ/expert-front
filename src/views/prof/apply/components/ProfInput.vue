@@ -48,9 +48,11 @@ export default {
     getTip(name) {
       switch(name) {
         case '出生年月':
-          return '请输入年份-月-日!';
+          return '请输入年份-月-日!'
+        case '工作单位':
+          return '请输入工作单位的全称!'
         default:  
-          return '请输入' + name + '!';
+          return '请输入' + name + '!'
       }
     }
   }
