@@ -33,18 +33,21 @@
           <div class="apply-right-wapper" v-else-if="leftStatus===4">
             <div class="right-content-title">个人履历</div>
             <div class="right-content-wapper">
+              <person-history @jump="jump"></person-history>
             </div>
           </div>
 
           <div class="apply-right-wapper" v-else-if="leftStatus===5">
             <div class="right-content-title">意见评价</div>
             <div class="right-content-wapper">
+              <person-opinion @jump="jump"></person-opinion>
             </div>
           </div>
 
           <div class="apply-right-wapper" v-else-if="leftStatus===6">
             <div class="right-content-title">申报完成</div>
             <div class="right-content-wapper">
+              <finish-apply></finish-apply>
             </div>
           </div>
         </div>
@@ -56,7 +59,7 @@
 <script>
 import PageTitle from '@/components/PageTitle.vue'
 import { ProfNav } from './components'
-import { BaseMessage, MajorCategory, MajorField } from './pages'
+import { BaseMessage, MajorCategory, MajorField, PersonHistory, PersonOpinion, FinishApply } from './pages'
 
 export default {
   components: { 
@@ -66,12 +69,19 @@ export default {
     BaseMessage,
     MajorCategory,
     MajorField,
+    PersonHistory,
+    PersonOpinion,
+    FinishApply,
   },
 
   data() {
     return {
-      leftStatus: 4,
+      leftStatus: 1,
     }
+  },
+
+  activated() {
+    this.leftStatus = 1
   },
 
   methods: {

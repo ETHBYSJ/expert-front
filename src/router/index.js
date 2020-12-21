@@ -48,7 +48,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
   {
     path: '/prof',
     component: Layout,
@@ -65,6 +64,25 @@ export const asyncRoutes = [
         component: () => import('@/views/prof/apply'),
         name: 'ProfApply',
         meta: { title: '专家申请', roles: ['professor', 'manager']},
+      }
+    ]
+  },
+  {
+    path: '/find',
+    component: Layout,
+    redirect: '/find/input',
+    children: [
+      {
+        path: 'input',
+        component: () => import('@/views/find/input'),
+        name: 'FindInput',
+        meta: { title: '专家搜索', roles: ['authorized', 'professor', 'manager']},
+      },
+      {
+        path: 'result',
+        component: () => import('@/views/find/result'),
+        name: 'FindResult',
+        meta: { title: '专家搜索', roles: ['authorized', 'professor', 'manager']},
       }
     ]
   }

@@ -60,23 +60,102 @@ GET
 
 专家申请
 
+上传申请表
+url: /api/v1/apply/upload
+POST
+请求体：formdata key: "file"
+
+下载申请表
+url：/api/v1/apply/download
+GET
+参数：无
+
 上传照片
 url：/api/v1/apply/uploadPhoto
-
-创建申请信息
-url：/api/v1/apply/create
+POST
+请求体：formdata key: "photo"
 
 提交基本信息
 url：/api/v1/apply/submitBase
+POST
+{
+    "name":
+    "sex":
+    "born":
+    "nation":
+    "phone":
+    "email":
+    "photo":
+    "politics":
+    "health":
+    "homecall":
+    "mobile":
+    "deptAddr":
+    "deptCode":
+    "homeAddr":
+    "homeCode":
+}
+
+获取基本信息
+url: /api/v1/apply/getBase
+GET
+参数：无
 
 提交专业类别
 url：/api/v1/apply/submitMajor
+POST
+{
+    "edu":
+    "degree":
+    "major":
+    "category":
+    "dept":
+    "techPost":
+    "adminPost":
+    "authDept":
+    "workTime"
+}
+
+获取专业类别
+url: /api/v1/apply/getMajor
+GET
+参数：无
 
 提交专攻领域
 url：/api/v1/apply/submitResearchField
+POST
+{
+    "majorLabels":["label1", "label2"],
+    "researchLabels":["label1"]
+}
+
+获取专攻领域
+url: /api/v1/apply/getResearchField
+GET
+参数：无
 
 提交个人履历
 url：/api/v1/apply/submitResume
+POST
+{
+    "workExperience":
+    "achievements":
+}
+
+获取个人履历
+url: /api/v1/apply/getResume
+GET
+参数：无
 
 提交意见评价
 url：/api/v1/apply/submitOpinion
+POST
+{
+    "deptOpinion":
+    "authDeptOpinion":
+}
+
+获取意见评价
+url: /api/v1/apply/getOpinion
+GET
+参数：无

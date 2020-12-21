@@ -26,17 +26,61 @@
 </template>
 
 <script>
+import { reqGetPorfRecords } from '@/api/request.js'
 import { formatDate } from '@/utils/util.js'
 
 export default {
   data() {
     return {
-      recordList: [{
-        title: '测试',
-        status: '审核中',
-        time: '12月20日 13:14',
-      }],
+      recordList: [],
     }
+  },
+
+  activated() {
+    reqGetPorfRecords().then(res => {
+      if (res.data.code === 10000) {
+        this.recordList = []
+        // 有记录
+        if (res.data.data.length > 0) {
+          // 处理
+          for (var item of res.data.data) {
+            var data = {}
+            data.title = item.title
+            if (item.status === 'accepted') {
+              data.status = '审核通过'
+            } else if (item.status === 'declined') {
+              data.status = '审核未通过'
+            } else if (item.status === 'reviewing') {
+              data.status = '审核中'
+            } else {
+              data.status = '未知错误'
+            }
+            data.time = formatDate(item.timestamp)
+            this.recordList.push(data)
+          }
+        } else {
+          // 无记录
+          this.$router.push('/prof/apply')
+        }
+      } else {
+        // 错误状态码
+        this.$alert('获取申报信息失败，点击返回主页', '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            window.location = "https://asc.shusim.com/edu/forum/"
+          }
+        });
+      }
+    }).catch(err => {
+      console.log(err)
+      // 错误状态码
+      this.$alert('获取申报信息失败，点击返回主页', '提示', {
+        confirmButtonText: '确定',
+        callback: action => {
+          window.location = "https://asc.shusim.com/edu/forum/"
+        }
+      });
+    })
   },
 
   methods: {

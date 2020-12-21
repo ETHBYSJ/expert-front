@@ -11,27 +11,27 @@
           <prof-upload-file :uploadObj="uploadFileObj"></prof-upload-file>
           <prof-upload-img></prof-upload-img>
           <div class="base-msg-unit">
-            <div class="base-msg-unit" style="padding-right:50px;">
+            <div class="base-msg-unit">
               <prof-input :inputObj="pageMsg[0].name"></prof-input>
             </div>
             <div class="base-msg-unit">
-              <prof-input size="100px" :inputObj="pageMsg[0].sex"></prof-input>
+              <prof-input style="padding-left:50px;" size="100px" :inputObj="pageMsg[0].sex"></prof-input>
             </div>
           </div>
           <div class="base-msg-unit">
-            <div class="base-msg-unit" style="padding-right:50px;">
+            <div class="base-msg-unit">
               <prof-input :inputObj="pageMsg[0].born"></prof-input>
             </div>
             <div class="base-msg-unit">
-              <prof-input size="100px" :inputObj="pageMsg[0].nation"></prof-input>
+              <prof-input style="padding-left:50px;" size="100px" :inputObj="pageMsg[0].nation"></prof-input>
             </div>
           </div>
           <div class="base-msg-unit">
-            <div class="base-msg-unit" style="padding-right:50px;">
+            <div class="base-msg-unit">
               <prof-input :inputObj="pageMsg[0].phone"></prof-input>
             </div>
             <div class="base-msg-unit">
-              <prof-input size="100px" :inputObj="pageMsg[0].email"></prof-input>
+              <prof-input style="padding-left:50px;" size="100px" :inputObj="pageMsg[0].email"></prof-input>
             </div>
           </div>
         </div>
@@ -82,6 +82,13 @@
 </template>
 
 <script>
+import { 
+  reqUploadExpertFile,
+  reqDownloadExpertFile,
+  reqUploadExpertImage,
+  reqCommitProfBaseMsg,
+  reqGetProfBaseMsg,
+} from '@/api/request.js'
 import { ProfInput, ProfInput2, ProfUploadFile, ProfUploadImg } from '../components'
 
 export default {
@@ -90,10 +97,6 @@ export default {
     ProfInput2,
     ProfUploadFile,
     ProfUploadImg,
-  },
-
-  props: {
-
   },
 
   data() {
@@ -123,15 +126,28 @@ export default {
     }
   },
 
+  mounted() {
+    reqGetProfBaseMsg().then(res => {
+      if (res.data.code === 10000) {
+        this.loadBaseMessage(res.data.data)
+      } else {
+        this.$alert('加载数据失败，请刷新后重试', '提示', {
+          confirmButtonText: '确定',
+        });
+      }
+    }).catch(err => {
+      this.$alert('加载数据失败，请刷新后重试', '提示', {
+        confirmButtonText: '确定',
+      });
+    })
+  },
+
   methods: {
-    /**
-     * 检查当前页
-     */
     checkPage() {
       let flag = true
       let curr = this.pageMsg[this.currPage]
       for (let key in curr) {
-        if (!curr[key].connent || curr[key].content.length<=0) {
+        if (!curr[key].content || curr[key].content.length<=0) {
           flag = false
           curr[key].alert = true
         }
@@ -145,10 +161,41 @@ export default {
       }
     },
 
+    loadBaseMessage(data) {
+      for (let msg of this.pageMsg) {
+        for(let key in msg) {
+          msg[key].content = data[key]
+        }
+      }
+    },
+
+    packBaseMessage() {
+      let data = {}
+      for (let msg of this.pageMsg) {
+        for(let key in msg) {
+          data[key] = msg[key].content
+        }
+      }
+      return data
+    },
+
     nextStep() {
       if (this.checkPage()) {
         // 请求
-        this.$emit('emit', 1)
+        const data = this.packBaseMessage()
+        reqCommitProfBaseMsg(data).then(res => {
+          if (res.data.code === 10000) {
+            this.$emit('jump', 1)
+          } else {
+            this.$alert('基本信息提交失败', '提示', {
+              confirmButtonText: '确定',
+            });
+          }
+        }).catch(err => {
+          this.$alert('基本信息提交失败', '提示', {
+            confirmButtonText: '确定',
+          });
+        })
       }
     }
   }

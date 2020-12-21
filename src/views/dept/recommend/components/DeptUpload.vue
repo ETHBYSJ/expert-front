@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { reqUploadRecFile } from '@/api/request.js'
+import { reqUploadDeptFile } from '@/api/request.js'
 
 export default {
   props: {
@@ -55,7 +55,7 @@ export default {
       if (this.uploadFileObj != {}) {
         let formData = new FormData()
         formData.append('file', this.uploadFileObj)
-        reqUploadRecFile(this.$route.query.id, formData).then(res => {
+        reqUploadDeptFile(this.$route.query.id, formData).then(res => {
           if (res.data.code === 10000) {
             this.$alert('文件上传成功！', '提示', {confirmButtonText: '确定'})
           } else {

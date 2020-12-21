@@ -1,16 +1,16 @@
 <template>
-  <div class="history-container">
-    <div class="history-wapper">
-      <div class="history-content-wapper">
+  <div class="opinion-container">
+    <div class="opinion-wapper">
+      <div class="opinion-content-wapper">
         <div class="row-flex-unit">
-          <prof-textarea :inputObj="pageMsg.workExperience"></prof-textarea>
+          <prof-textarea :inputObj="pageMsg.deptOpinion"></prof-textarea>
         </div>
         <div class="row-flex-unit">
-          <prof-textarea :inputObj="pageMsg.achievements"></prof-textarea>
+          <prof-textarea :inputObj="pageMsg.authDeptOpinion"></prof-textarea>
         </div>
       </div>
 
-      <div class="history-button-wapper">
+      <div class="opinion-button-wapper">
         <div class="next-button" style="float:left;" @click="nextStep(-1)">上一步</div>
         <div class="next-button" style="float:right;" @click="nextStep(1)">下一步</div>
       </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { reqCommitProfResume, reqGetProfResume } from '@/api/request.js'
+import { reqCommitProfOpinion, reqGetProfOpinion } from '@/api/request.js'
 import ProfTextarea from '../components/ProfTextarea.vue'
 
 export default {
@@ -27,23 +27,15 @@ export default {
   
   data() {
     return {
-      pageMsg: {
-        workExperience: {
-          name: '工作经历（请注明参与评估活动及指标研发情况）', 
-          content: '', 
-          alert: ''
-        },
-	      achievements: {
-          name: '工作成绩（请注明近5年获奖、教科研情况等）', 
-          content: '', 
-          alert: ''
-        },
+      pageMsg: { 
+        deptOpinion: {name: '单位推荐意见', content: '', alert: ''},
+        authDeptOpinion: {name: '主管部门意见', content: '', alert: ''},
       }
-     }
+    }
   },
 
   mounted() {
-    reqGetProfResume().then(res => {
+    reqGetProfOpinion().then(res => {
       if (res.data.code === 10000) {
         this.loadMajorCate(res.data.data)
       } else {
@@ -88,16 +80,16 @@ export default {
       if (this.checkPage()) {
         // 请求
         const data = this.packBaseMessage()
-        reqCommitProfResume(data).then(res => {
+        reqCommitProfOpinion(data).then(res => {
           if (res.data.code === 10000) {
             this.$emit('jump', step)
           } else {
-            this.$alert('个人履历提交失败', '提示', {
+            this.$alert('意见评价提交失败', '提示', {
               confirmButtonText: '确定',
             });
           }
         }).catch(err => {
-          this.$alert('个人履历提交失败', '提示', {
+          this.$alert('意见评价提交失败', '提示', {
             confirmButtonText: '确定',
           });
         })
@@ -108,25 +100,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.history-container {
+.opinion-container {
   position: relative;
   width: 100%;
   height: 100%;
 
-  .history-wapper {
+  .opinion-wapper {
     display: flex;
     flex-flow: column;
     height: 100%;
     width: 800px;
     margin: 0 auto;
     
-    .history-content-wapper {
+    .opinion-content-wapper {
       flex: 1;
       display: flex;
       flex-flow: column;  
     }
 
-    .history-button-wapper {
+    .opinion-button-wapper {
       flex: 0 0 85px;
       padding: 0 200px;
     }

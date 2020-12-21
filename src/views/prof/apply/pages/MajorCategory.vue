@@ -39,14 +39,15 @@
         </div>
       </div>
       <div class="cate-button-wapper">
-        <div class="next-button" style="float:left;">上一步</div>
-        <div class="next-button" style="float:right;">下一步</div>
+        <div class="next-button" style="float:left;" @click="nextStep(-1)">上一步</div>
+        <div class="next-button" style="float:right;" @click="nextStep(1)">下一步</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { reqCommitProfCate, reqGetProfCate } from '@/api/request.js'
 import { ProfInput } from '../components'
 
 export default {
@@ -66,6 +67,69 @@ export default {
         adminPost: {name:'现行行政职务', content:'', alert:false},
         authDept: {name:'单位主管部门', content:'', alert:false},
         workTime: {name:'工作时间', content:'', alert:false},
+      }
+    }
+  },
+
+  mounted() {
+    reqGetProfCate().then(res => {
+      if (res.data.code === 10000) {
+        this.loadMajorCate(res.data.data)
+      } else {
+        this.$alert('加载数据失败，请刷新后重试', '提示', {
+          confirmButtonText: '确定',
+        });
+      }
+    }).catch(err => {
+      this.$alert('加载数据失败，请刷新后重试', '提示', {
+        confirmButtonText: '确定',
+      });
+    })
+  },
+
+  methods: {
+    checkPage() {
+      let flag = true
+      for (let key in this.pageMsg) {
+        if (!this.pageMsg[key].content || this.pageMsg[key].content.length<=0) {
+          flag = false
+          this.pageMsg[key].alert = true
+        }
+      }
+      return flag
+    },
+
+    loadMajorCate(data) {
+      for(let key in this.pageMsg) {
+        this.pageMsg[key].content = data[key]
+      }
+    },
+
+    packBaseMessage() {
+      let data = {}
+      for(let key in this.pageMsg) {
+        data[key] = this.pageMsg[key].content
+      }
+      return data
+    },
+
+    nextStep(step) {
+      if (this.checkPage()) {
+        // 请求
+        const data = this.packBaseMessage()
+        reqCommitProfCate(data).then(res => {
+          if (res.data.code === 10000) {
+            this.$emit('jump', step)
+          } else {
+            this.$alert('专业类别提交失败', '提示', {
+              confirmButtonText: '确定',
+            });
+          }
+        }).catch(err => {
+          this.$alert('专业类别提交失败', '提示', {
+            confirmButtonText: '确定',
+          });
+        })
       }
     }
   }
