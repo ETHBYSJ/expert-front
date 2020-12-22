@@ -1,7 +1,7 @@
 <template>
   <div class="opinion-container">
     <div class="opinion-wapper">
-      <div class="opinion-content-wapper">
+      <div class="opinion-content-wapper animate__animated animate__fadeIn">
         <div class="row-flex-unit">
           <prof-textarea :inputObj="pageMsg.deptOpinion"></prof-textarea>
         </div>

@@ -100,7 +100,9 @@ const actions = {
 
   // user logout
   logout({ commit }) {
-
+    return new Promise(resolve => {
+      resolve()
+    })
   },
 
   // remove login status

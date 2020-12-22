@@ -1,7 +1,7 @@
 <template>
   <div class="result-box result-container">
     <div class="result-img-wapper">
-      <img :src="imgUrl">
+      <img :src="photo.length>0?photo:require('@/assets/expert.png')">
     </div>
 
     <div class="result-intro-wapper">
@@ -30,7 +30,7 @@ export default {
       type: String,
       default: '姓名',
     },
-    imgUrl: {
+    photo: {
       type: String,
       default: require('@/assets/expert.png'),
     },
@@ -104,7 +104,7 @@ export default {
       }
 
       .result-labels-button {
-        margin-top: 15px;
+        margin-top: 12px;
         height: 30px;
         line-height: 30px;
         width: 70px;

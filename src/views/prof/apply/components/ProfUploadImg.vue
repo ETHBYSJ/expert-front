@@ -6,13 +6,15 @@
         <el-upload
           class="avatar-uploader"
           action="http://localhost:1125/api/v1/apply/uploadPhoto"
+          :limit="1"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
+          :on-error="handleAvatarError"
           :before-upload="beforeAvatarUpload">
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
-        <div class="prof-upload-limit">请上传413像素*295像素的证件照</div>
+        <div class="prof-upload-limit">请上传295像素*413像素的证件照</div>
       </div>
     </div>
   </div>
@@ -22,15 +24,25 @@
 import { reqUploadExpertImage } from '@/api/request.js'
 
 export default {
-  data() {
-    return {
-      imageUrl: ''
-    };
+  props: {
+    imageUrl: {
+      type: String,
+      default: ''
+    }
   },
 
   methods: {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      this.$alert('头像上传成功！', '提示', {
+        confirmButtonText: '确定',
+      });
+    },
+
+    handleAvatarError() {
+      this.$alert('头像上传失败', '提示', {
+        confirmButtonText: '确定',
+      });
     },
 
     beforeAvatarUpload(file) {

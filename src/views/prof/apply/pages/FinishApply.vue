@@ -1,5 +1,5 @@
 <template>
-  <div class="finish-apply-container">
+  <div class="finish-apply-container animate__animated animate__fadeIn">
     
     <div class="finish-apply-img-wapper">
       <img src="@/assets/commit-succ.png">
@@ -25,7 +25,8 @@ export default {
 
   .finish-apply-img-wapper {
     width: 185px;
-    margin: 100px auto 80px;
+    margin: 0 auto;
+    padding: 70px 0;
 
     img {
       height: 185px;
@@ -43,7 +44,7 @@ export default {
   }
 
   .finish-apply-button {
-    margin: 130px auto 0;
+    margin: 146px auto 0;
   }
 }
 </style>

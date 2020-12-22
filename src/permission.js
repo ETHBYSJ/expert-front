@@ -11,10 +11,10 @@ router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
 
-  console.log({
+  /*console.log({
     from: from.path,
     to: to.path
-  })
+  })*/
   // --------------------------入口登录-----------------------------
   // set title
   document.title = getPageTitle(to.meta.title)

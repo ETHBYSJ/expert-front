@@ -1,5 +1,4 @@
 import { get, post } from './axios.js'
-import { convertRes2Blob } from '@/utils/util.js'
 
 
 export const reqSendCode = (data) => post('/iadmin/sms/send_code', data)
@@ -35,7 +34,9 @@ export const reqUploadExpertFile = (data) => post('/api/v1/apply/upload', data, 
 // 下载推荐表
 export const reqDownloadExpertFile = () => get('/api/v1/apply/download')
 // 上传图片
-export const reqUploadExpertImage = (data) => post('/api/v1/apply/uploadPhoto', data, {type: 'file', 'Content-Type': 'application/x-www-form-urlencoded'})
+export const reqUploadPhoto = (data) => post('/api/v1/apply/uploadPhoto', data, {type: 'file', 'Content-Type': 'application/x-www-form-urlencoded'})
+// 获取图片Url
+export const reqGetPhotoUrl = () => get('/api/v1/apply/photoUrl')
 // 提交基本信息
 export const reqCommitProfBaseMsg = (data) => post('/api/v1/apply/submitBase', data)
 // 获取基本信息

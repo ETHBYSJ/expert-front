@@ -5,19 +5,33 @@
     <div class="find-wapper adaptive-height">
       <div class="find-result-wapper" v-show="doFind">
         <div class="right-content-title">专家搜索</div>
-        <div class="find-result-content" v-if="totalPages>0">
-          <el-row gutter="45">
-            <el-col></el-col>
-            <el-col></el-col>
-          </el-row>
-          <el-row gutter="45">
-            <el-col></el-col>
-            <el-col></el-col>
-          </el-row>
-          <el-row gutter="45">
-            <el-col></el-col>
-            <el-col></el-col>
-          </el-row>
+
+        <div v-loading="finding">
+          <div class="find-has-result" v-if="result.length>0">
+            <div class="find-result-content clearfix">
+              <result-box 
+                v-for="(item, index) in result.slice(currPage*pageSize, currPage*pageSize+6)" 
+                style="margin-bottom:30px;float:left;"
+                :class="[{hasleft: index%2==1}]"
+                :key="item.photo"
+                :name="item.name"
+                :photo="item.photo"
+                :intro="item.intro"
+                :labels="item.labels">
+              </result-box>
+            </div>
+
+            <div class="find-pagenum-wapper">
+              <el-pagination
+                layout="prev, pager, next"
+                @current-change="handleCurrentChange"
+                :total="result.length"
+                :page-size="pageSize">
+              </el-pagination>
+            </div>
+          </div>
+
+          <div class="find-no-result" v-else>无结果</div>
         </div>
       </div>
 
@@ -60,34 +74,37 @@ export default {
 
   data() {
     return {
+      finding: false,
       keyword: '',
       labels: [],
-      doFind: true,
+      doFind: false,
       // 查询结果
       result: [],
       pageSize: 6,
-      totalPages: 0,
       currPage: 0,
     }
   },
 
-  mounted() {
-    this.test()
+  activated() {
+    this.resetFind()
+    this.loadResult([])
+    this.doFind = false
   },
 
   methods: {
-    test() {
-      this.result = []
-      for (var i=0; i<10; ++i) {
-        this.result.push({
-          name: '尹猛',
-          labels: ['SJTU', 'CS', 'MASTER'],
-          photo: '',
-          intro: '上海交通大学学生',
-        })
+    handleCurrentChange(currentPage) {
+      this.currPage = currentPage-1;
+      console.log(currentPage)
+    },
+
+    loadResult(data) {
+      this.result = data
+      // 修改url，加上前缀
+      for (let p of this.result) {
+        if (p.photo && p.photo.length>0) {
+          p.photo = 'http://localhost:1125' + p.photo
+        }
       }
-      this.result = res.data.data
-      this.totalPages = Math.ceil(this.result.length/6)
       this.currPage = 0
       this.doFind = true
     },
@@ -98,23 +115,24 @@ export default {
     },
 
     doSearch() {
+      this.finding = true;
       let data = {
         keyword: this.keyword,
         labels: this.labels,
       }
       reqGetFindResult(data).then(res => {
         if (res.data.code === 10000) {
-          this.result = res.data.data
-          this.totalPages = Math.ceil(this.result.length/6)
-          this.currPage = 0
-          this.doFind = true
+          console.log(res.data.data)
+          this.loadResult(res.data.data)
         } else {
           this.$alert('查询失败，请检查网络或账户状态', '提示', {
             confirmButtonText: '确定',
           });
         }
+        this.finding = false
       }).catch(err => {
         console.log(err)
+        this.finding = false
         this.$alert('查询失败，请检查网络或账户状态', '提示', {
           confirmButtonText: '确定',
         });
@@ -137,11 +155,38 @@ export default {
       flex: 1;
       border: 2px solid #5CC0FE;
       background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      flex-flow: column;
 
-      .find-result-content {
-        width: 800px;
-        margin: 0 auto;
+      .find-no-result {
+        flex: 1;
+        font-size: 26px;
+        text-align: center;
+        padding: 200px 0;
       }
+
+      .find-has-result {
+        flex: 1;
+
+        .find-result-content {
+          width: 800px;
+          height: 520px;
+          margin: 0 auto;
+
+          .hasleft {
+            margin-left: 40px;
+          }
+        }
+
+        .find-pagenum-wapper {
+          margin-top: 10px;
+
+          .el-pagination {
+            text-align: center;
+          }
+        }
+      }
+      
     }
 
     .find-condition-wapper {

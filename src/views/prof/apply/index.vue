@@ -9,42 +9,42 @@
         </div>
 
         <div class="apply-right-container">
-          <div class="apply-right-wapper" v-if="leftStatus===1">
+          <div class="apply-right-wapper" v-show="leftStatus===1">
             <div class="right-content-title">基本信息</div>
             <div class="right-content-wapper">
               <base-message @jump="jump"></base-message>
             </div>
           </div>
 
-          <div class="apply-right-wapper" v-else-if="leftStatus===2">
+          <div class="apply-right-wapper" v-show="leftStatus===2">
             <div class="right-content-title">专业类别</div>
             <div class="right-content-wapper">
               <major-category @jump="jump"></major-category>
             </div>
           </div>
 
-          <div class="apply-right-wapper" v-else-if="leftStatus===3">
+          <div class="apply-right-wapper" v-show="leftStatus===3">
             <div class="right-content-title">专攻领域</div>
             <div class="right-content-wapper">
               <major-field @jump="jump"></major-field>
             </div>
           </div>
 
-          <div class="apply-right-wapper" v-else-if="leftStatus===4">
+          <div class="apply-right-wapper" v-show="leftStatus===4">
             <div class="right-content-title">个人履历</div>
             <div class="right-content-wapper">
               <person-history @jump="jump"></person-history>
             </div>
           </div>
 
-          <div class="apply-right-wapper" v-else-if="leftStatus===5">
+          <div class="apply-right-wapper" v-show="leftStatus===5">
             <div class="right-content-title">意见评价</div>
             <div class="right-content-wapper">
               <person-opinion @jump="jump"></person-opinion>
             </div>
           </div>
 
-          <div class="apply-right-wapper" v-else-if="leftStatus===6">
+          <div class="apply-right-wapper" v-show="leftStatus===6">
             <div class="right-content-title">申报完成</div>
             <div class="right-content-wapper">
               <finish-apply></finish-apply>

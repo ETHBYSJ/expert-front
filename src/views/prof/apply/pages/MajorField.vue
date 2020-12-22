@@ -1,7 +1,7 @@
 <template>
   <div class="field-container">
     <div class="field-wapper">
-      <div class="field-content-wapper">
+      <div class="field-content-wapper animate__animated animate__fadeIn">
         <div class="row-flex-unit">
           <prof-labels 
             title="从事专业或学科（该项内容将作为专家搜索的标签）"

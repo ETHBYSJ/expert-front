@@ -7,7 +7,7 @@
       </div>
 
       <div class="expert-page-mid">
-        <div class="expert-page-inputs" 
+        <div class="expert-page-inputs animate__animated animate__fadeIn" 
           v-for="(expertMsg, index) in expertList" 
           :key="expertMsg.id"
           v-show="currPage==index">

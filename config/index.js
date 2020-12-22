@@ -19,7 +19,12 @@ module.exports = {
         //target: 'http://192.168.1.119:8888',
         target: 'http://202.120.39.3:8888',
         changeOrigin: true
-      }
+      },
+      /*"/static": {
+        //target: 'http://192.168.1.119:8888',
+        target: 'http://202.120.39.3:8888',
+        changeOrigin: true
+      }*/
     },
 
     // Various Dev Server settings

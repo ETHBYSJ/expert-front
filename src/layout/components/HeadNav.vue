@@ -6,8 +6,7 @@
       </div>
       <div class="nav-title">长三角区域教育评价变革协作联盟专家库</div>
       <div class="nav-login-wapper">
-        <!--div class="nav-login-button" v-if="userStatus" @click="handleLogin">登录</div-->
-        <div class="nav-user-wapper">
+        <div class="nav-user-wapper" @click="handleLogout">
           <img class="nav-user-img" src="@/assets/icon-profile.png">{{userName}}
         </div>
       </div>
@@ -27,30 +26,28 @@ export default {
     }),
   },
 
-  /*data() {
-    return {
-      redirect: undefined,
-    }
-  },
-
-  watch: {
-    $route: {
-      handler: function(route) {
-        const query = route.query
-        if (query) {
-          this.redirect = query.redirect
-        }
-      },
-      immediate: true
-    }
-  },*/
-
   methods: {
     //handleLogin() {
     //  this.$store.dispatch('user/login').then(response => {
     //    this.$router.push({ path: this.redirect || '/home'})
     //  }).catch(err => {})
-    //}
+    //},
+
+    handleLogout() {
+      this.$confirm(`确认退出登录?`, '提示').then(() => {
+        /***********************************************
+         * 对接时到store/user.js logout() 中补充登出操作 *
+         ***********************************************/ 
+        this.$store.dispatch('user/logout').then(() => {
+          // 成功执行，跳回到入口
+          window.location = "https://asc.shusim.com/edu/forum/"
+        }).catch(err => {
+          // 出现错误，进一步处理
+        })
+      }).catch(() => {
+        // do nothing
+      })
+    }
   }
 }
 </script>

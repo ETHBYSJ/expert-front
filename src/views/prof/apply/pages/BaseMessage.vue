@@ -7,9 +7,9 @@
           <img style="cursor:not-allowed" v-show="currPage==0" src="@/assets/left-arrow-gray.png">
         </div>
 
-        <div class="base-msg-mid" v-show="currPage==0">
+        <div class="base-msg-mid animate__animated animate__fadeIn" v-show="currPage==0">
           <prof-upload-file :uploadObj="uploadFileObj"></prof-upload-file>
-          <prof-upload-img></prof-upload-img>
+          <prof-upload-img :imageUrl="imageUrl"></prof-upload-img>
           <div class="base-msg-unit">
             <div class="base-msg-unit">
               <prof-input :inputObj="pageMsg[0].name"></prof-input>
@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <div class="base-msg-mid" v-show="currPage==1">
+        <div class="base-msg-mid animate__animated animate__fadeIn" v-show="currPage==1">
           <div class="base-msg-unit"></div>
           <div class="base-msg-mid-top">
             <div class="base-msg-unit">
@@ -85,7 +85,8 @@
 import { 
   reqUploadExpertFile,
   reqDownloadExpertFile,
-  reqUploadExpertImage,
+  reqUploadPhoto,
+  reqGetPhotoUrl,
   reqCommitProfBaseMsg,
   reqGetProfBaseMsg,
 } from '@/api/request.js'
@@ -103,6 +104,7 @@ export default {
     return {
       currPage: 0,
       uploadFileObj: {uploadStatus: '选择文件', uploadName: ''},
+      imageUrl: '',
 
       // 个人信息
       pageMsg: [{
@@ -128,18 +130,50 @@ export default {
 
   mounted() {
     reqGetProfBaseMsg().then(res => {
+      console.log(res)
       if (res.data.code === 10000) {
         this.loadBaseMessage(res.data.data)
       } else {
-        this.$alert('加载数据失败，请刷新后重试', '提示', {
+        this.$alert('加载基本信息失败，请刷新后重试', '提示', {
           confirmButtonText: '确定',
         });
       }
     }).catch(err => {
-      this.$alert('加载数据失败，请刷新后重试', '提示', {
+      this.$alert('加载基本信息失败，请刷新后重试', '提示', {
         confirmButtonText: '确定',
       });
     })
+
+    reqGetPhotoUrl().then(res => {
+      if (res.data.code === 10000) {
+        if (res.data.data && res.data.data.length>0) {
+          this.imageUrl = 'http://localhost:1125' + res.data.data
+        }
+      }
+    }).catch(err => {
+      this.$alert('加载头像失败，请刷新后重试', '提示', {
+        confirmButtonText: '确定',
+      });
+    })
+
+    /*
+    reqGetExpertFile().then(res => {
+      if (res.data.code === 10000) {
+        // load上传文件
+        if (res.data.data. && res,data.data.length > 0) {
+          this.uploadFileObj.uploadStatus = '重新上传'
+          this.uploadFileObj.uploadName = res.data.data
+        } else {
+          this.uploadFileObj.uploadStatus = '选择上传'
+          this.uploadFileObj.uploadName = '
+        }
+      }
+    }).catch(err =>{
+      this.$alert('加载文件失败，请刷新后重试', '提示', {
+        confirmButtonText: '确定',
+      });
+    })
+    */
   },
 
   methods: {
@@ -186,6 +220,7 @@ export default {
         reqCommitProfBaseMsg(data).then(res => {
           if (res.data.code === 10000) {
             this.$emit('jump', 1)
+            this.currPage = 0
           } else {
             this.$alert('基本信息提交失败', '提示', {
               confirmButtonText: '确定',

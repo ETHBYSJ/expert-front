@@ -5,7 +5,7 @@
       <div class="dept-upload-content">
         <span style="color:#bbbbbb">请先下载</span>
         <el-tooltip class="item" effect="dark" content="点击下载文件" placement="right">
-          <span style="color:#0639e1; cursor:pointer;">《长三角区域教育评价变革协作联盟专家库成员推荐汇总表》</span>
+          <span style="color:#0639e1; cursor:pointer;" @click="downloadFile">《长三角区域教育评价变革协作联盟专家库成员推荐汇总表》</span>
         </el-tooltip>
         <span style="color:#bbbbbb">后填写并上传文件。</span>
 
@@ -18,7 +18,8 @@
 </template>
 
 <script>
-import { reqUploadDeptFile } from '@/api/request.js'
+import { convertRes2Blob } from '@/utils/util.js'
+import { reqDownloadDeptFile, reqUploadDeptFile } from '@/api/request.js'
 
 export default {
   props: {
@@ -65,6 +66,19 @@ export default {
           this.$alert('文件上传失败', '提示', {confirmButtonText: '确定'})
         })
       }  
+    },
+
+    // 下载文件
+    downloadFile() {
+      this.$confirm(`确认下载该文件?`, '提示').then(() => {
+        reqDownloadDeptFile().then(res => {
+          convertRes2Blob(res)
+        }).catch(err => {
+          this.$alert('请求下载失败', '提示', {
+            confirmButtonText: '确定',
+          });
+        })
+      }).catch(() => {})
     }
   }
 }

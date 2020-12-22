@@ -10,44 +10,35 @@
         </div>
         
         <div class="rec-right-wapper">
-          <div class="rec-msg-container" v-if="leftStatus===1">
-            
+          <div class="rec-msg-container animate__animated animate__fadeIn" v-show="leftStatus===1">
             <div class="right-content-title">单位信息</div>
-
             <div class="adaptive-upload-height">
               <dept-upload :uploadObj="uploadObj"></dept-upload>
             </div>
-
             <div class="rec-msg-unit" v-for="(value, key) in deptMsg" :key="key">
               <dept-input :inputObj="value"></dept-input>
             </div>
-
             <div class="next-button rec-msg-button" @click="nextStep">下一步</div>
           </div>
 
-          <div class="rec-expert-container" v-else-if="leftStatus===2">
+          <div class="rec-expert-container animate__animated animate__fadeIn" v-show="leftStatus===2">
             <div class="right-content-title">专家推荐</div>
-
             <div class="rec-expert-content-wapper">
               <expert-page refs="expert-page" :expertList="expertList"></expert-page>
             </div>
-
             <div class="rec-expert-button-box">
               <div class="next-button" style="float:left" @click="backStep">上一步</div>
               <div class="next-button" style="float:right" @click="nextStep">提交</div>
             </div>
           </div>
 
-          <div class="rec-result-container" v-else-if="leftStatus===3">
+          <div class="rec-result-container animate__animated animate__fadeIn" v-show="leftStatus===3">
             <div class="right-content-title">上报成功</div>
-
             <div class="rec-result-img-wapper">
               <img src="@/assets/commit-succ.png">
             </div>
-
             <div class="rec-result-intro">专家推荐上报成功，请等待联盟秘书处审核！</div>
-
-            <div class="next-button rec-result-button" @click="$router.push('/dept/detail')">完成</div>
+            <div class="next-button rec-result-button" @click="backToDetail">完成</div>
           </div>
         </div>
       </div>
@@ -103,7 +94,6 @@ export default {
           this.deptMsg = new Department(),
           this.expertList = [new Expert()]  
         }
-        this.leftStatus = 1
       }).catch(err => {
         //console.log(err)
         window.location = "https://asc.shusim.com/edu/forum/"
@@ -135,6 +125,11 @@ export default {
       }
     },
 
+    backToDetail() {
+      this.$router.push('/dept/detail')
+      this.leftStatus = 1
+    },
+    
     // 上一步
     backStep() {
       if (this.leftStatus === 2) {

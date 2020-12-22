@@ -1,7 +1,7 @@
 <template>
   <div class="cate-container">
     <div class="cate-wapper">
-      <div class="cate-input-wapper">
+      <div class="cate-input-wapper  animate__animated animate__fadeIn">
         <div class="row-flex-unit">
           <div class="row-flex-unit" style="margin-left:40px">
             <prof-input size="140px" :inputObj="pageMsg.edu"></prof-input>

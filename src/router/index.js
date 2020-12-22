@@ -57,13 +57,13 @@ export const asyncRoutes = [
         path: 'detail',
         component: () => import('@/views/prof/detail'),
         name: 'ProfDetail',
-        meta: { title: '我的申请', roles: ['professor', 'manager']},
+        meta: { title: '我的申请', roles: ['professor']},
       },
       {
         path: 'apply',
         component: () => import('@/views/prof/apply'),
         name: 'ProfApply',
-        meta: { title: '专家申请', roles: ['professor', 'manager']},
+        meta: { title: '专家申请', roles: ['professor']},
       }
     ]
   },

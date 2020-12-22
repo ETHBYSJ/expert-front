@@ -1,7 +1,7 @@
 <template>
   <div class="history-container">
     <div class="history-wapper">
-      <div class="history-content-wapper">
+      <div class="history-content-wapper animate__animated animate__fadeIn">
         <div class="row-flex-unit">
           <prof-textarea :inputObj="pageMsg.workExperience"></prof-textarea>
         </div>
