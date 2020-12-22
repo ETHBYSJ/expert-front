@@ -6,7 +6,7 @@
     </div>
 
     <div class="index-content-container">
-      <div id="fixed-nav" style="height: 72px"></div>
+      <div style="height: 72px"></div>
       <app-main></app-main>
     </div>
   </div>
@@ -42,9 +42,6 @@ export default {
 
   .index-content-container {
     background: transparent;
-    height: 100%;
-    width: 100%;
-    flex-flow: column;
   }
 }
 </style>

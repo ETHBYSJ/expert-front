@@ -56,3 +56,5 @@ export const reqGetProfResume = () => get('/api/v1/apply/getResume')
 export const reqCommitProfOpinion = (data) => post('/api/v1/apply/submitOpinion', data)
 // 获取意见评价
 export const reqGetProfOpinion = () => get('/api/v1/apply/getOpinion')
+// 获取结果
+export const reqGetFindResult = (data) => post('/api/v1/search/doSearch', data)

@@ -5,7 +5,7 @@
       <div class="prof-upload-content">
         <el-upload
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://localhost:1125/api/v1/apply/uploadPhoto"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -37,13 +37,13 @@ export default {
       const isImg = ['image/jpeg', 'image/png'].includes(file.type);
       const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
+      if (!isImg) {
         this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
       }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
-      return isJPG && isLt2M;
+      return isImg && isLt2M;
     }
   }
 }

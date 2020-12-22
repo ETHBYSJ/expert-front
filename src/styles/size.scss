@@ -56,6 +56,19 @@
   }
 }
 
+.adaptive-find-width {
+  min-width: 1400px;
+  width: 1400px;
+  /*
+  @media screen and (min-width:1500px) {
+    width: 1400px;
+  }
+
+  @media screen and (max-width:1499px) {
+    width: 1100px;
+  }*/
+}
+
 .adaptive-upload-height {
   @media screen and (min-height: 980px) {// 大屏适配
     height: 160px;

@@ -70,20 +70,13 @@ export const asyncRoutes = [
   {
     path: '/find',
     component: Layout,
-    redirect: '/find/input',
     children: [
       {
-        path: 'input',
-        component: () => import('@/views/find/input'),
-        name: 'FindInput',
+        path: '/',
+        component: () => import('@/views/find'),
+        name: 'Find',
         meta: { title: '专家搜索', roles: ['authorized', 'professor', 'manager']},
       },
-      {
-        path: 'result',
-        component: () => import('@/views/find/result'),
-        name: 'FindResult',
-        meta: { title: '专家搜索', roles: ['authorized', 'professor', 'manager']},
-      }
     ]
   }
 ]
