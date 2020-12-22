@@ -4,11 +4,25 @@
 
     <div class="find-wapper adaptive-height">
       <div class="find-result-wapper" v-show="doFind">
-
+        <div class="right-content-title">专家搜索</div>
+        <div class="find-result-content" v-if="totalPages>0">
+          <el-row gutter="45">
+            <el-col></el-col>
+            <el-col></el-col>
+          </el-row>
+          <el-row gutter="45">
+            <el-col></el-col>
+            <el-col></el-col>
+          </el-row>
+          <el-row gutter="45">
+            <el-col></el-col>
+            <el-col></el-col>
+          </el-row>
+        </div>
       </div>
 
       <div class="find-condition-wapper" :class="{'do-find': doFind}">
-        <div class="right-content-title">专家搜索</div>
+        <div class="right-content-title" v-show="!doFind">专家搜索</div>
 
         <div class="find-box-wapper" :class="{'do-find': doFind}">
           <input class="find-input" v-model="keyword">
@@ -35,23 +49,52 @@
 import { reqGetFindResult } from '@/api/request.js'
 import PageTitle from '@/components/PageTitle.vue'
 import ExpertLabels from '@/components/ExpertLabels.vue'
+import ResultBox from './components/ResultBox.vue'
 
 export default {
-  components: { PageTitle, ExpertLabels },
+  components: {
+    PageTitle, 
+    ExpertLabels,
+    ResultBox,
+  },
 
   data() {
     return {
       keyword: '',
       labels: [],
-      doFind: false,
+      doFind: true,
+      // 查询结果
+      result: [],
+      pageSize: 6,
+      totalPages: 0,
+      currPage: 0,
     }
   },
 
+  mounted() {
+    this.test()
+  },
+
   methods: {
+    test() {
+      this.result = []
+      for (var i=0; i<10; ++i) {
+        this.result.push({
+          name: '尹猛',
+          labels: ['SJTU', 'CS', 'MASTER'],
+          photo: '',
+          intro: '上海交通大学学生',
+        })
+      }
+      this.result = res.data.data
+      this.totalPages = Math.ceil(this.result.length/6)
+      this.currPage = 0
+      this.doFind = true
+    },
+
     resetFind() {
       this.keyword = ''
       this.labels = []
-      this.doFind = false
     },
 
     doSearch() {
@@ -60,10 +103,21 @@ export default {
         labels: this.labels,
       }
       reqGetFindResult(data).then(res => {
-        console.log(res)
-        this.doFind = true
+        if (res.data.code === 10000) {
+          this.result = res.data.data
+          this.totalPages = Math.ceil(this.result.length/6)
+          this.currPage = 0
+          this.doFind = true
+        } else {
+          this.$alert('查询失败，请检查网络或账户状态', '提示', {
+            confirmButtonText: '确定',
+          });
+        }
       }).catch(err => {
         console.log(err)
+        this.$alert('查询失败，请检查网络或账户状态', '提示', {
+          confirmButtonText: '确定',
+        });
       })
     }
   }
@@ -74,6 +128,7 @@ export default {
 .find-container {
   position: relative;
   margin: 0 auto;
+  padding: 0 24px;
 
   .find-wapper {
     display: flex;
@@ -81,6 +136,12 @@ export default {
     .find-result-wapper {
       flex: 1;
       border: 2px solid #5CC0FE;
+      background: rgba(255, 255, 255, 0.8);
+
+      .find-result-content {
+        width: 800px;
+        margin: 0 auto;
+      }
     }
 
     .find-condition-wapper {
@@ -91,9 +152,15 @@ export default {
       flex-flow: column;
 
       &.do-find {
-        flex: 0 0 450px;
+        flex: 0 0 400px;
         margin-left: 30px;
         border-top: 4px solid #5CC0FE;
+        background: rgba(252, 252, 252, 0.8);
+
+        @media screen and (max-width: 1499px) {
+          flex: 0 0 350px;
+          margin-left: 20px;
+        }
       }
 
       .find-box-wapper {
@@ -103,6 +170,11 @@ export default {
 
         &.do-find {
           width: 350px;
+          margin-top: 30px;
+
+          @media screen and (max-width: 1499px) {
+            width: 300px;
+          }
         } 
 
         .find-input {
@@ -142,6 +214,10 @@ export default {
 
         &.do-find {
           width: 350px;
+
+          @media screen and (max-width: 1499px) {
+            width: 300px;
+          }
         } 
 
         .find-labels-title {

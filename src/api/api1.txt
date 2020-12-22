@@ -1,0 +1,5 @@
+获取照片url
+/api/v1/apply/photoUrl
+GET
+参数：无
+
