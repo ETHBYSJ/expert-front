@@ -142,7 +142,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .find-container {
   position: relative;
   margin: 0 auto;

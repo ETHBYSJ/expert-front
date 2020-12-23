@@ -91,7 +91,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .detail-container {
   position: relative;
 
@@ -112,13 +112,15 @@ export default {
       padding: 0 24px;
       border: 2px solid #5cc0fe;
       background: white;
+
+      .el-table {
+        font-size: 17px;
+
+        .table-row {
+          height: 56px;
+        }
+      }
     }
   }
 }
-
-.el-table>>> .table-row {
-  font-size: 17px;
-  height: 56px;
-}
-
 </style>

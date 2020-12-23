@@ -11,10 +11,11 @@
           :on-success="handleAvatarSuccess"
           :on-error="handleAvatarError"
           :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <img v-if="imageObj.imageUrl" :src="imageObj.imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         <div class="prof-upload-limit">请上传295像素*413像素的证件照</div>
+        <div class="prof-upload-tip">{{imageObj.alert}}</div>
       </div>
     </div>
   </div>
@@ -25,15 +26,26 @@ import { reqUploadExpertImage } from '@/api/request.js'
 
 export default {
   props: {
-    imageUrl: {
-      type: String,
-      default: ''
+    imageObj: {
+      type: Object,
+      default: function() {
+        return {
+          imageUrl: '',
+          alert: '',
+        }
+      }
+    }
+  },
+
+  watch: {
+    'imageObj.imageUrl': function() {
+      this.imageObj.alert = ''
     }
   },
 
   methods: {
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageObj.imageUrl = URL.createObjectURL(file.raw);
       this.$alert('头像上传成功！', '提示', {
         confirmButtonText: '确定',
       });
@@ -61,7 +73,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .prof-upload-container {
   position: relative;
 
@@ -104,10 +116,16 @@ export default {
       }
 
       .prof-upload-limit {
-        height: 60px;
-        line-height: 30px;
+        line-height: 20px;
         font-size: 15px;
         color: #BBBBBB;
+      }
+
+      .prof-upload-tip {
+        height: 40px;
+        color: red;
+        font-size: 12px;
+        line-height: 20px;
       }
     }
   }

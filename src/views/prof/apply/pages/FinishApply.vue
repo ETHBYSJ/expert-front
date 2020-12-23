@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .finish-apply-container {
   width: 700px;
   height: 100%;

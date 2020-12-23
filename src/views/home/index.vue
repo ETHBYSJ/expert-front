@@ -4,7 +4,7 @@
       <div class="choose_box_wapper">
         <choose-box 
           :img-src="require('@/assets/user.png')"
-          text="我是用户，我要查询专家"
+          text="我要查询专家"
           @click.native="handleFind"
         >
         </choose-box>
@@ -12,7 +12,7 @@
       <div class="choose_box_wapper">
         <choose-box 
           :img-src="require('@/assets/expert.png')"
-          text="我是被推荐人，我要成为专家"
+          text="我要成为专家"
           @click.native="handleApply"
         >
         </choose-box>
@@ -20,7 +20,7 @@
       <div class="choose_box_wapper">
         <choose-box 
           :img-src="require('@/assets/department.png')"
-          text="我是申报单位，我要推荐专家"
+          text="我要推荐专家"
           @click.native="handleDept"
         >
         </choose-box>
@@ -66,7 +66,8 @@ export default {
         });
       } else {
         const roles = this.role.split('/')
-        if (roles.includes('professor') && roles.includes('c3j.experts')) {
+        //if (roles.includes('professor') && roles.includes('c3j.experts')) {
+        if ((roles.includes('professor') || roles.includes('manager')) && roles.includes('c3j.experts')) {
           this.$router.push('/prof')
         } else {
           this.$alert('当前角色无权限访问该功能', '提示', {
@@ -96,7 +97,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .home_container {
   position: relative;
   height: calc(100vh - 72px);
@@ -114,8 +115,6 @@ export default {
     .choose_box_wapper {
       flex: 1;
     }
-      
   }
-
 }
 </style>

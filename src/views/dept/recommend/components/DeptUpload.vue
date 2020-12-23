@@ -9,9 +9,13 @@
         </el-tooltip>
         <span style="color:#bbbbbb">后填写并上传文件。</span>
 
-        <div class="dept-upload-button hollow-button" @click="choiceFile">{{uploadObj.uploadStatus}}</div>
-        <span class="dept-upload-file-name">{{uploadObj.uploadName}}</span>
-        <input ref="filElem" type="file" style="display:none" @change="getFile($event)">
+        <div class="dept-upload-bot">
+          <div class="dept-upload-button hollow-button" @click="choiceFile">{{uploadObj.text}}</div>
+          <span class="dept-upload-file-name">{{uploadObj.name}}</span>
+          <input ref="filElem" type="file" style="display:none" @change="getFile($event)">
+
+          <div class="dept-upload-tip">{{uploadObj.alert}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -23,12 +27,27 @@ import { reqDownloadDeptFile, reqUploadDeptFile } from '@/api/request.js'
 
 export default {
   props: {
-    uploadObj: Object,
+    uploadObj: {
+      type: Object,
+      default: function() {
+        return  {
+          text: '选择上传',
+          name: '',
+          alert: '',
+        }
+      }
+    }
   },
 
   data() {
     return {
       uploadFileObj: {},
+    }
+  },
+
+  watch: {
+    'uploadObj.name': function() {
+      this.uploadFile.alert = ''
     }
   },
 
@@ -42,11 +61,10 @@ export default {
     getFile(event) {
       // load文件名
       if (event.target.files.length == 0) {
-        this.uploadObj.uploadName = ''
+        // do nothing
       }
       else {
         this.uploadFileObj = event.target.files[0]
-        this.uploadObj.uploadName = event.target.files[0].name
         this.uploadFile()
       }
     },
@@ -59,6 +77,7 @@ export default {
         reqUploadDeptFile(this.$route.query.id, formData).then(res => {
           if (res.data.code === 10000) {
             this.$alert('文件上传成功！', '提示', {confirmButtonText: '确定'})
+            this.uploadObj.name = event.target.files[0].name
           } else {
             this.$alert('文件上传失败', '提示', {confirmButtonText: '确定'})
           }
@@ -84,7 +103,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dept-upload-container {
   position: relative;
 
@@ -102,16 +121,31 @@ export default {
       font-size: 15px;
       flex: 1;
 
-      .dept-upload-button {
-        margin: 12px 0 4px;
-        height: 36px;
-        width: 90px;
-        line-height: 34px;
-      }
+      .dept-upload-bot {
+        margin-bottom: 15px;
 
-      .dept-upload-file-name {
-        line-height: 20px;
-        font-size: 14px;
+        .dept-upload-button {
+          display: inline-block;
+          margin: 12px 0 4px;
+          height: 36px;
+          width: 90px;
+          line-height: 34px;
+        }
+
+        .dept-upload-file-name {
+          display: inline-block;
+          height: 30px;
+          line-height: 20px;
+          font-size: 14px;
+          margin-left: 8px;
+        }
+
+        .dept-upload-tip {
+          height: 18px;
+          color: red;
+          font-size: 12px;
+          line-height: 18px;
+        }
       }
     }
 

@@ -99,7 +99,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .opinion-container {
   position: relative;
   width: 100%;

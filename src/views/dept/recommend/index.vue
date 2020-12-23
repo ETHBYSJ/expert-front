@@ -6,7 +6,7 @@
       <div class="rec-content-container adaptive-height">
         
         <div class="rec-left-wapper">
-          <dept-nav></dept-nav>
+          <dept-nav v-model="leftStatus"></dept-nav>
         </div>
         
         <div class="rec-right-wapper">
@@ -66,8 +66,9 @@ export default {
       leftStatus: 1,
       submitId: '',
       uploadObj: {
-        uploadStatus: '选择文件',
-        uploadName: '',
+        text: '选择文件',
+        name: '',
+        alert: '',
       },
       // page1
       deptMsg: new Department(),
@@ -88,8 +89,9 @@ export default {
           // 没有记录，新建
           // 清空旧的缓存数据
           this.uploadObj = {
-            uploadStatus: '选择文件',
-            uploadName: '',
+            text: '选择文件',
+            name: '',
+            alert: '',
           },
           this.deptMsg = new Department(),
           this.expertList = [new Expert()]  
@@ -108,8 +110,8 @@ export default {
     loadRecMsg(data) {
       const { file, department, list } = data
       // 加载上传文件信息
-      this.uploadObj.uploadName = file
-      this.uploadObj.uploadStatus = (file && file.length>0) ? '重新上传' : '选择文件'
+      this.uploadObj.name = file
+      this.uploadObj.text = (file && file.length>0) ? '重新上传' : '选择文件'
       // 加载部门信息
       for (let key in department) {
         this.deptMsg[key].content = department[key]
@@ -169,6 +171,7 @@ export default {
 
     // 打包commit数据
     packRecMsg() {
+      // 文件上传
       let msg = {'submitID': this.submitId, department: {}, list: []}
       // 单位信息
       for (let key in this.deptMsg) {
@@ -187,11 +190,17 @@ export default {
       return msg
     },
 
-    // 检查单位空白信息
+    
     checkDeptMsg() {
       let flag = true
+      // 检查文件上传
+      if (!(this.uploadObj.name && this.uploadObj.name.length > 0)) {
+        flag = false
+        this.uploadObj.alert = '请上传文件！'
+      }
+      // 检查单位空白信息
       for (let key in this.deptMsg) {
-        if (!this.deptMsg[key].content || this.deptMsg[key].content.length <= 0) {
+        if (!(this.deptMsg[key].content && this.deptMsg[key].content.length > 0)) {
           flag = false
           this.deptMsg[key].alert = true
         }
@@ -204,7 +213,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .rec-container {
   position: relative;
 

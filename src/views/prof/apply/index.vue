@@ -93,7 +93,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .apply-container {
   position: relative;
 

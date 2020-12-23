@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .msg-input-container {
   position: relative;
   flex: 1;

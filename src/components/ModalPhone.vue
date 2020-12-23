@@ -140,7 +140,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .modal_phone_main
   height: 100%
   width 100%

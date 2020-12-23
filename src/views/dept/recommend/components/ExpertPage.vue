@@ -123,7 +123,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .expert-page-container {
   position: relative;
   height: 100%;

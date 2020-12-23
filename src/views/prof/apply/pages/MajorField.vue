@@ -79,7 +79,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .field-container {
   position: relative;
   height: 100%;

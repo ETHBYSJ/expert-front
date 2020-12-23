@@ -8,8 +8,8 @@
         </div>
 
         <div class="base-msg-mid animate__animated animate__fadeIn" v-show="currPage==0">
-          <prof-upload-file :uploadObj="uploadFileObj"></prof-upload-file>
-          <prof-upload-img :imageUrl="imageUrl"></prof-upload-img>
+          <prof-upload-file :uploadObj="uploadObj"></prof-upload-file>
+          <prof-upload-img :imageObj="imageObj"></prof-upload-img>
           <div class="base-msg-unit">
             <div class="base-msg-unit">
               <prof-input :inputObj="pageMsg[0].name"></prof-input>
@@ -84,6 +84,7 @@
 <script>
 import { 
   reqUploadExpertFile,
+  reqGetExpertFile,
   reqDownloadExpertFile,
   reqUploadPhoto,
   reqGetPhotoUrl,
@@ -103,9 +104,15 @@ export default {
   data() {
     return {
       currPage: 0,
-      uploadFileObj: {uploadStatus: '选择文件', uploadName: ''},
-      imageUrl: '',
-
+      uploadObj: {
+        text: '选择文件',
+        name: '',
+        alert: '',
+      },
+      imageObj: {
+        imageUrl: '',
+        alert: '',
+      },
       // 个人信息
       pageMsg: [{
         name:   {name:'姓名', content: '', alert: false},
@@ -130,7 +137,7 @@ export default {
 
   mounted() {
     reqGetProfBaseMsg().then(res => {
-      console.log(res)
+      //console.log(res)
       if (res.data.code === 10000) {
         this.loadBaseMessage(res.data.data)
       } else {
@@ -147,7 +154,7 @@ export default {
     reqGetPhotoUrl().then(res => {
       if (res.data.code === 10000) {
         if (res.data.data && res.data.data.length>0) {
-          this.imageUrl = 'http://localhost:1125' + res.data.data
+          this.imageObj.imageUrl = 'http://localhost:1125' + res.data.data
         }
       }
     }).catch(err => {
@@ -156,16 +163,16 @@ export default {
       });
     })
 
-    /*
+  
     reqGetExpertFile().then(res => {
       if (res.data.code === 10000) {
         // load上传文件
-        if (res.data.data. && res,data.data.length > 0) {
-          this.uploadFileObj.uploadStatus = '重新上传'
-          this.uploadFileObj.uploadName = res.data.data
+        if (res.data.data && res.data.data.length > 0) {
+          this.uploadObj.text = '重新上传'
+          this.uploadObj.name = res.data.data
         } else {
-          this.uploadFileObj.uploadStatus = '选择上传'
-          this.uploadFileObj.uploadName = '
+          this.uploadObj.text = '选择上传'
+          this.uploadObj.name = ''
         }
       }
     }).catch(err =>{
@@ -173,15 +180,25 @@ export default {
         confirmButtonText: '确定',
       });
     })
-    */
+  
   },
 
   methods: {
     checkPage() {
       let flag = true
+      // 检查上传文件和头像
+      if (!(this.uploadObj.name && this.uploadObj.name.length>0)) {
+        flag = false
+        this.uploadObj.alert = '请上传文件！'
+      }
+      if (!(this.imageObj.imageUrl && this.imageObj.imageUrl.length>0)) {
+        flag = false
+        this.imageObj.alert = '请上传头像！'
+      }
+      // 检查当前页信息
       let curr = this.pageMsg[this.currPage]
       for (let key in curr) {
-        if (!curr[key].content || curr[key].content.length<=0) {
+        if (!(curr[key].content && curr[key].content.length>0)) {
           flag = false
           curr[key].alert = true
         }
@@ -237,7 +254,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .base-msg-container {
   height: 100%;
   position: relative;
@@ -283,7 +300,6 @@ export default {
       }
     }
 
-    
     .base-msg-button-wapper {
       height: 85px;
     }

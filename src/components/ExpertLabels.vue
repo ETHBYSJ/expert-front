@@ -60,7 +60,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .expert-labels-container {
   position: relative;
   width: 100%;

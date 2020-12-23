@@ -31,6 +31,8 @@ export const reqDownloadDeptFile = () => get('/api/v1/recommend/download')
 export const reqGetPorfRecords = () => get('/api/v1/apply/records')
 // 上传表格
 export const reqUploadExpertFile = (data) => post('/api/v1/apply/upload', data, {type: 'file', 'Content-Type': 'application/x-www-form-urlencoded'})
+// 获取表格名称
+export const reqGetExpertFile = () => get('/api/v1/apply/fileName')
 // 下载推荐表
 export const reqDownloadExpertFile = () => get('/api/v1/apply/download')
 // 上传图片
