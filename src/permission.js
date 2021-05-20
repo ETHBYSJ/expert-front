@@ -47,9 +47,28 @@ router.beforeEach(async(to, from, next) => {
     } else {
       try{
         const { role } = await store.dispatch('user/getInfo')
-        const roles = role.split('/')
+        // role array
+        
+        const roles = role.split(',')
         // generate accessible routes map based on roles
-        const accessRoutes = await store.dispatch('permission/generateRoutes', roles) 
+
+        var c3jRole = ""
+        var rootFlag = false
+        var adminFlag = false
+        for (var item of roles) {
+          if (item.indexOf("c3j.experts") >= 0) {
+            c3jRole = item
+          } else if (item.indexOf("root") >= 0) {
+            rootFlag = true
+          } else if (item.indexOf("admin") >= 0) {
+            adminFlag = true
+          }
+        }
+        if (c3jRole == "" && (rootFlag || adminFlag)) {
+          c3jRole = "authorized/c3j.experts"
+        }
+
+        const accessRoutes = await store.dispatch('permission/generateRoutes', c3jRoles) 
 
         // dynamically add accessible routes
         router.addRoutes(accessRoutes)
